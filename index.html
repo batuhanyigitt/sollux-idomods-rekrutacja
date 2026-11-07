@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SOLLUX – Kolor i forma w nowym świetle</title>
+  <meta name="description" content="Oficjalny sklep producenta SOLLUX. Lampy w wielu kolorach, darmowa dostawa już od 299 zł, 5 lat gwarancji.">
+  <meta name="theme-color" content="#101011">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="SOLLUX">
+  <meta property="og:title" content="SOLLUX – Kolor i forma w nowym świetle">
+  <meta property="og:description" content="Landing page sklepu z lampami SOLLUX – zadanie rekrutacyjne IdoMods (Frontend + AI Developer).">
+
+  <link rel="preload" as="image" href="assets/img/hero-bg.webp" fetchpriority="high">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+  <script src="js/shader.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Przejdź do treści</a>
+
+  <!-- ============ NAGŁÓWEK ============ -->
+  <header class="header" data-header>
+    <div class="header__inner container">
+      <div class="header__start">
+      <a class="header__logo" href="#" aria-label="SOLLUX – strona główna">
+        <svg class="logo" viewBox="0 0 150 48" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M35.53 12.91l-1.81 .25 -1.31 .75 -.88 .25 -1.56 1 -1.81 1.75 -1 1.43 -1.07 2.44 -.31 3.19 .19 2.12 .25 1.07 .75 1.68 1 1.57 2.56 2.5 .88 .31 .87 .62 3.31 .94 2.38 0 3.5 -.94 1.12 -.75 .88 -.31 1.19 -.94 1.06 -1.12 .5 -.94 .69 -.81 .31 -1.31 .69 -1.44 .18 -1.75 -.12 -2.81 -1.13 -3.13 -1.31 -1.81 -1.62 -1.5 -1.44 -1 -2.19 -1 -3.06 -.38zM34.84 17.03l2.88 -.19 1.69 .25 1.81 1.13 1.44 1.31 1.25 2.25 .12 .88 -.06 2.62 -.88 2.13 -2.31 2.31 -2.5 1.06 -2.5 .06 -2.62 -1.06 -1.88 -1.69 -1.19 -2.18 -.25 -2.69 .19 -1.56 .44 -.94 .75 -1.13 1.37 -1.37zM125.72 13.16l.06 .62 2.06 2.06 1.32 1.75 2.81 2.94 1.25 1.69 1.19 1.19 -.19 .81 -.94 1.06 -.56 .94 -2.63 2.81 -1.12 1.5 -2.69 2.81 -.5 .88 .06 .44 .57 .18 3.75 0 .5 -.18 1.06 -.94 .62 -1 2.5 -2.69 1.19 -1.56 1.38 -1.31 .31 .06 1.44 1.81 2.56 2.75 1.44 1.88 1.25 1.12 3.18 0 .69 .13 .69 -.32 .06 -.37 -.37 -.75 -7.63 -8.63 -.56 -1.12 .06 -.38 1.25 -1.25 .38 -.68 2.68 -2.75 1.32 -1.82 2.75 -2.81 .18 -.75 -.25 -.37 -.31 -.13 -3.94 .06 -.43 .19 -.94 .88 -.38 .68 -2.68 2.82 -1.32 1.75 -.81 .87 -.44 .25 -.62 -.25 -1.88 -1.94 -1.25 -1.68 -3.31 -3.5 -4.06 -.13 -.5 .13zM99.53 13.16l-.25 .43 .06 11.63 .19 .94 .63 1.93 .56 .75 .56 1.19 .94 1.19 1.19 1.12 2.5 1.57 2.68 .81 1.13 .12 2.25 -.06 1.25 -.25 1.37 -.56 .88 -.13 2.12 -1.5 2.07 -2 .75 -1.56 .5 -.69 .93 -3.75 0 -10.75 -.31 -.56 -.5 -.19 -2.44 -.06 -.56 .25 -.37 .5 .06 10.88 -.88 2.81 -1.37 1.75 -1.44 1 -1.62 .69 -1.69 .25 -2 -.19 -1.94 -.88 -1.75 -1.5 -.31 -.62 -.44 -.44 -.81 -2 -.13 -1 -.06 -10.94 -.37 -.37 -.5 -.19 -1.75 0zM75.53 13.16l-.25 .43 0 18.63 .19 1.06 .69 1 .56 .44 .94 .12 17.93 -.06 .38 -.62 .06 -2.5 -.19 -.57 -.43 -.31 -14.94 .06 -.88 -.5 -.12 -.75 .06 -16.06 -.5 -.56 -.69 -.19 -1.68 0zM51.78 13.09l-.31 .44 0 18.81 .12 1 .44 .69 .5 .5 1.06 .31 18 -.06 .38 -.62 .06 -2.5 -.19 -.57 -.43 -.31 -14.94 .06 -.88 -.5 -.12 -.75 .06 -16.06 -.5 -.56 -.69 -.19 -1.68 0zM20.09 13.09l-.68 -.31 -12.69 .06 -1.69 .13 -.94 .25 -1.37 .81 -1.56 1.5 -.38 .94 -.37 .37 -.38 .07 0 4.62 .38 0 .31 .31 .5 1.25 1.44 1.38 .87 .56 .81 .19 1.25 .56 10.07 0 .93 .13 .63 .31 .69 .75 .31 .69 .06 .93 -.31 1 -1.63 1.25 -16.31 0 0 3.94 16.94 -.06 2.31 -.88 1.63 -1.37 .31 -.69 .44 -.44 .37 -.93 .31 -1.88 0 -1 -.5 -2 -1 -1.37 -.93 -.94 -1.57 -1 -1.93 -.38 -10.57 -.06 -.37 -.19 -1.06 -1.06 -.38 -1.06 0 -.81 .19 -.38 1.06 -1.19 .38 -.18 1.5 -.13 12.43 0 .5 -.31 .25 -.94 0 -2z"/></svg>
+      </a>
+
+      <nav class="nav" aria-label="Główna nawigacja">
+        <ul class="nav__list">
+          <li class="nav__item has-dropdown">
+            <button class="nav__link" style="--w: 65px" aria-expanded="false" aria-controls="dd-lampy">Lampy <svg class="nav__chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.75 6.5 8 9.75l3.25-3.25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="dropdown" id="dd-lampy">
+              <ul class="dropdown__list">
+                <li><a href="#">Lampy sufitowe</a></li>
+                <li><a href="#">Lampy wiszące</a></li>
+                <li><a href="#">Kinkiety</a></li>
+                <li><a href="#">Reflektory i spoty</a></li>
+                <li><a href="#">Lampy stołowe</a></li>
+                <li><a href="#">Lampy podłogowe</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav__item has-dropdown">
+            <button class="nav__link" style="--w: 63px" aria-expanded="false" aria-controls="dd-kolory">Kolory <svg class="nav__chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.75 6.5 8 9.75l3.25-3.25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="dropdown" id="dd-kolory">
+              <ul class="dropdown__list dropdown__list--swatches">
+                <li><a href="#"><span class="swatch" style="--c:#e9d3bd"></span>Beżowy</a></li>
+                <li><a href="#"><span class="swatch" style="--c:#b8532f"></span>Terakota</a></li>
+                <li><a href="#"><span class="swatch" style="--c:#5b5a2c"></span>Oliwkowy</a></li>
+                <li><a href="#"><span class="swatch" style="--c:#2c3f8f"></span>Granatowy</a></li>
+                <li><a href="#"><span class="swatch" style="--c:#f2bf25"></span>Żółty</a></li>
+                <li><a href="#"><span class="swatch" style="--c:#111"></span>Czarny</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav__item has-dropdown">
+            <button class="nav__link" style="--w: 116px" aria-expanded="false" aria-controls="dd-pomieszczenia">Pomieszczenia <svg class="nav__chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.75 6.5 8 9.75l3.25-3.25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="dropdown" id="dd-pomieszczenia">
+              <ul class="dropdown__list">
+                <li><a href="#">Salon</a></li>
+                <li><a href="#">Kuchnia i jadalnia</a></li>
+                <li><a href="#">Sypialnia</a></li>
+                <li><a href="#">Łazienka</a></li>
+                <li><a href="#">Przedpokój</a></li>
+                <li><a href="#">Biuro</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav__item"><a class="nav__link" style="--w: 56px" href="#">Nowości</a></li>
+          <li class="nav__item"><a class="nav__link" style="--w: 73px" href="#">Bestsellery</a></li>
+          <li class="nav__item"><a class="nav__link" style="--w: 63px" href="#">Promocje</a></li>
+        </ul>
+      </nav>
+      </div>
+
+      <form class="search" role="search" action="#" onsubmit="return false">
+        <label class="visually-hidden" for="search-input">Szukaj produktów</label>
+        <input class="search__input" id="search-input" type="search" placeholder="Czego szukasz?" autocomplete="off">
+        <button class="search__btn" type="submit" aria-label="Szukaj">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8.53 5.16l-1.37 1.43 -.32 .69 -.5 .63 -.37 .87 -.19 1.06 -.12 1.75 .25 1 0 .63 .31 .94 .44 .5 .5 1 1.37 1.37 1.19 .81 2.62 .82 2.19 -.07 1 -.43 .88 -.19 .93 -.75 .38 -.06 .87 .56 2.25 2.25 .63 .25 .5 -.19 .31 -.5 -.19 -.56 -2.43 -2.44 -.5 -.81 .12 -.5 .56 -.56 .19 -.38 .06 -.56 .5 -1.5 .13 -1.44 -.44 -2.06 -.31 -.94 -.88 -1.19 -1.62 -1.62 -1.13 -.75 -1.81 -.44 -2.12 -.12 -2.38 .62zM12.22 5.34l1.87 0 2.19 .88 1.5 1.37 .69 1.07 .44 1.12 .06 2.38 -.88 2.25 -1.56 1.56 -.75 .31 -.75 .5 -.69 .19 -2.56 -.06 -1.12 -.44 -1.07 -.69 -1.5 -1.69 -.37 -.75 -.31 -1.06 -.13 -1 .06 -.94 .57 -1.68 .56 -1.07 1.5 -1.37 1.19 -.44 .5 -.31z"/></svg>
+        </button>
+      </form>
+
+      <div class="header__actions">
+        <a class="header__configurator" href="#">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M9.53 1.78l-.75 .38 -.44 .43 -.75 .38 -1.12 .87 -.94 .32 -.81 .68 -.94 .5 -.62 .69 -.19 .63 0 6.75 .25 .62 .44 .44 2.25 1.5 .5 .19 1.25 .87 .62 .25 .88 .69 .68 .19 .57 0 .68 -.25 .57 -.5 .75 -.38 1.12 -.87 .94 -.32 1 -.81 .75 -.37 .56 -.57 .25 -.68 0 -6.94 -.37 -.81 -.44 -.38 -1.44 -.69 -1.69 -1.25 -1.25 -.56 -.75 -.62 -.81 -.32zM15.16 8.47l.18 .25 .07 3.56 -.38 1.06 -.44 .44 -.87 .38 -.56 .5 -.75 .37 -.82 .56 -.37 -.06 -.25 -.37 -.06 -.44 0 -3.38 .18 -.81 .44 -.37 .75 -.25 .81 -.69 1 -.63 .57 -.25zM4.84 8.47l.44 -.13 .56 .19 2.07 1.44 .56 .25 .44 .44 .18 .75 0 3.56 -.12 .44 -.25 .25 -.63 -.13 -.68 -.62 -.63 -.32 -.69 -.56 -.37 -.12 -.75 -.63 -.38 -.94 .07 -3.62zM5.78 6.34l1.06 -1 1.38 -.68 .87 -.69 .38 -.19 .69 0 1.31 .5 .62 .5 1.19 .69 .81 .75 .07 .37 -.38 .38 -1.31 .87 -.94 .32 -.87 .75 -.25 .12 -.75 0 -.69 -.31 -1.81 -1.31 -1.25 -.63z"/></svg>
+          <span>Stwórz swoją lampę</span>
+        </a>
+        <a class="icon-btn" href="#" aria-label="Moje konto">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8.59 2.97l-1.5 1.5 -.25 .81 -.31 .38 -.5 1.25 0 1.93 .31 1.38 .82 1.44 .68 .62 .07 .31 -.38 .44 -.5 .25 -.69 .63 -.62 .31 -1.44 1.5 -1 1.31 -.37 1.06 -.44 .75 -.31 1 -.07 1.44 .13 .31 .69 .38 .62 -.06 .38 -.32 .31 -1.93 .44 -.63 .5 -1.25 1.37 -1.75 .69 -.37 .75 -.63 1.87 -.81 1.19 -.25 1.69 0 1.62 .25 .63 .44 1.31 .56 .5 .44 .69 .37 .5 .5 .37 .69 .63 .75 .81 1.87 .31 1.75 .57 .38 .62 0 .31 -.13 .25 -.25 .13 -.37 -.13 -1.44 -.31 -1.06 -.87 -1.94 -.82 -1 -1.62 -1.62 -1.06 -.75 -.88 -.44 -.25 -.31 .06 -.38 .82 -.75 .25 -.81 .31 -.38 .5 -1.25 .06 -1.25 -.12 -1.06 -.25 -1 -.63 -1.19 -1.5 -1.5 -.81 -.25 -.38 -.31 -1.25 -.5 -1.25 -.06 -1.06 .12 -1.12 .32zM10.66 4.09l1 -.12 1 0 .62 .12 1.44 1 1.19 1.57 .12 1 0 1 -.12 .62 -1 1.44 -1.5 1.19 -1.13 .12 -1.56 -.12 -1.44 -1 -1.19 -1.57 -.12 -1 0 -1 .12 -.62 1 -1.44z"/></svg>
+        </a>
+        <a class="icon-btn" href="#" aria-label="Koszyk">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M1.03 4.16l-.12 .68 .12 .38 .25 .25 .44 0 1.37 -.63 .88 0 .44 .19 .43 .5 .44 2.56 .56 1.69 .19 1.5 .81 2.63 .19 1 -.06 .62 -.94 1.06 0 1.44 .19 .44 .31 .31 1.88 1.06 .5 1.32 .37 .56 .25 .19 .75 .18 .81 0 .5 -.18 1.07 -1.25 .43 -.94 .44 -.25 1.94 0 .31 .12 .44 .5 .75 1.38 .37 .37 .44 .19 1.31 0 .57 -.25 .37 -.37 .31 -.88 .13 -.87 -.44 -1.07 -.62 -.5 -.88 -.12 -10 .06 -.62 -.25 -.19 -.19 0 -.31 .37 -.31 .82 -.19 8.37 0 .69 .13 1.37 0 .5 -.19 .38 -.44 .56 -1.25 .44 -2.25 .56 -1.5 .5 -2.5 .69 -1.62 .06 -.69 -.37 -.5 -15.38 -.06 -.75 -.25 -.37 -.57 -.13 -.56 -.25 -.44 -.5 -.5 -1 -.5 -1.56 .07 -1.13 .5zM7.22 7.72l.5 -.31 12.62 0 .44 .37 .13 1 -.75 1.88 -.25 1.56 -.38 1.12 -.19 .25 -.18 .88 -.57 .69 -8.93 .06 -.82 -.31 -.5 -.69 -.62 -3.38 -.63 -1.62 -.06 -.88z"/></svg>
+        </a>
+        <button class="icon-btn burger" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- menu mobilne -->
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+    <form class="search search--mobile" role="search" action="#" onsubmit="return false">
+      <label class="visually-hidden" for="search-input-m">Szukaj produktów</label>
+      <input class="search__input" id="search-input-m" type="search" placeholder="Czego szukasz?">
+    </form>
+    <ul class="mobile-menu__list">
+      <li><a href="#">Lampy</a></li>
+      <li><a href="#">Kolory</a></li>
+      <li><a href="#">Pomieszczenia</a></li>
+      <li><a href="#">Nowości</a></li>
+      <li><a href="#">Bestsellery</a></li>
+      <li><a href="#">Promocje</a></li>
+      <li><a href="#">Stwórz swoją lampę</a></li>
+    </ul>
+  </div>
+
+  <main id="main">
+    <!-- ============ HERO / SLIDER ============ -->
+    <section class="hero" aria-roledescription="karuzela" aria-label="Wyróżnione kolekcje" data-slider>
+      <div class="hero__slides" aria-live="off" data-slides>
+
+        <!-- Slajd 1: interaktywne lampy -->
+        <article class="slide is-active" aria-roledescription="slajd" aria-label="1 z 2" data-slide>
+          <div class="slide__media" data-slide-media>
+            <div class="stage" data-stage>
+              <img class="stage__bg" src="assets/img/hero-bg.webp" alt="" width="1920" height="1080" fetchpriority="high">
+
+              <div class="stage__lamps">
+                <button class="lamp lamp--beige" type="button" aria-pressed="false" aria-label="Włącz beżową lampę" data-lamp data-depth="0.55">
+                  <span class="lamp__hit"></span>
+                  <img src="assets/img/lamp-beige.webp" alt="" width="372" height="419" draggable="false">
+                </button>
+                <button class="lamp lamp--terracotta" type="button" aria-pressed="false" aria-label="Włącz lampę w kolorze terakoty" data-lamp data-depth="1">
+                  <span class="lamp__hit"></span>
+                  <img src="assets/img/lamp-terracotta.webp" alt="" width="423" height="393" draggable="false">
+                </button>
+                <button class="lamp lamp--green" type="button" aria-pressed="false" aria-label="Włącz oliwkowy reflektor" data-lamp data-depth="0.8">
+                  <span class="lamp__hit"></span>
+                  <img src="assets/img/lamp-green.webp" alt="" width="470" height="428" draggable="false">
+                </button>
+              </div>
+
+              <div class="stage__dim" aria-hidden="true"></div>
+
+              <!-- światło każdej lampy: osobna warstwa nad przyciemnieniem, transform synchronizowany z lampą w JS -->
+              <div class="stage__lights" aria-hidden="true">
+                <div class="light lamp--beige" data-light><span class="light__beam"></span><span class="light__halo"></span><span class="light__glow"></span></div>
+                <div class="light lamp--terracotta" data-light><span class="light__beam"></span><span class="light__halo"></span><span class="light__glow"></span></div>
+                <div class="light lamp--green" data-light><span class="light__beam"></span><span class="light__halo"></span><span class="light__glow"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide__content container">
+            <p class="slide__eyebrow">Bestsellery SOLLUX</p>
+            <h1 class="slide__title">Kolor i forma<br> w nowym świetle</h1>
+            <a class="btn btn--yellow" href="#">Sprawdź bestsellery</a>
+          </div>
+        </article>
+
+        <!-- Slajd 2 -->
+        <article class="slide" aria-roledescription="slajd" aria-label="2 z 2" aria-hidden="true" data-slide>
+          <div class="slide__media slide__media--shade" data-slide-media>
+            <img class="slide__img" src="assets/img/slide-2.webp" alt="" width="1920" height="1080" decoding="async" fetchpriority="low">
+          </div>
+          <div class="slide__content container">
+            <p class="slide__eyebrow">Inspiracje SOLLUX</p>
+            <h2 class="slide__title">Światło, które<br> buduje wnętrze</h2>
+            <a class="btn btn--yellow" href="#" tabindex="-1">Zobacz inspiracje</a>
+          </div>
+        </article>
+      </div>
+
+      <button class="hero__arrow hero__arrow--prev" type="button" aria-label="Poprzedni slajd" data-prev>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="hero__arrow hero__arrow--next" type="button" aria-label="Następny slajd" data-next>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div class="hero__pagination" role="group" aria-label="Wybierz slajd" data-pagination>
+        <button class="dot is-active" type="button" aria-label="Slajd 1" aria-current="true"><span class="dot__fill"></span></button>
+        <button class="dot" type="button" aria-label="Slajd 2"><span class="dot__fill"></span></button>
+      </div>
+
+      <a class="hero__rating" href="#">
+        <span class="hero__rating-score">4.8</span>
+        <svg class="hero__rating-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.5L12 17.3l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z" fill="#F28C13"/></svg>
+        <span>Uwielbiany przez klientów</span>
+      </a>
+
+      <div class="cursor-hint" aria-hidden="true" data-cursor-hint>Kliknij, aby włączyć</div>
+    </section>
+
+    <!-- ============ USP ============ -->
+    <div class="vps">
+    <section class="usp" aria-label="Dlaczego SOLLUX">
+      <ul class="usp__list">
+        <li class="usp__item">
+          <svg class="usp__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M25 9v6.5a2 2 0 0 1-2 2H8m4.5-4.5L8 17.5l4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3 class="usp__title">Zwroty nawet do 100 dni</h3>
+          <p class="usp__text">szybkie i proste</p>
+        </li>
+        <li class="usp__item">
+          <svg class="usp__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M9 4.5h14v23l-7-5.5-7 5.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <h3 class="usp__title">5 lat gwarancji</h3>
+          <p class="usp__text">na wszystkie produkty</p>
+        </li>
+        <li class="usp__item">
+          <svg class="usp__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M3.5 8.5h15v13h-15zM18.5 12.5h5.5l4.5 5v4h-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8.5" cy="23" r="2.5" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="23" cy="23" r="2.5" fill="#fff" stroke="currentColor" stroke-width="2"/></svg>
+          <h3 class="usp__title">Darmowa dostawa</h3>
+          <p class="usp__text">już za 299 zł</p>
+        </li>
+        <li class="usp__item">
+          <svg class="usp__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5l11 5v8c0 6.2-4.6 10.4-11 12-6.4-1.6-11-5.8-11-12v-8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16 9.5v13M16 14h5v-4.5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 15.5h8v6h-8z" fill="currentColor"/></svg>
+          <h3 class="usp__title">Polskie produkty</h3>
+          <p class="usp__text">sprawdzona jakość</p>
+        </li>
+        <li class="usp__item">
+          <svg class="usp__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M10 4.5h12v8a6 6 0 0 1-12 0zM10 7H5.5v2.5A4.5 4.5 0 0 0 10 14M22 7h4.5v2.5A4.5 4.5 0 0 1 22 14M16 18.5v4M11 27.5h10v-5H11z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <h3 class="usp__title">Oficjalny sklep producenta</h3>
+          <p class="usp__text">gwarancja satysfakcji</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ KAFELKI ============ -->
+    <section class="tiles" aria-label="Odkryj więcej">
+      <a class="tile tile--thoro" href="#">
+        <div class="tile__media"><img src="assets/img/tile-thoro.webp" alt="" width="648" height="518" loading="lazy"></div>
+        <div class="tile__body">
+          <p class="tile__eyebrow">Marka THORO</p>
+          <h2 class="tile__title">Poznaj lampy premium</h2>
+          <span class="btn btn--dark">Odwiedź sklep THORO</span>
+        </div>
+      </a>
+
+      <a class="tile tile--configurator" href="#">
+        <div class="tile__media"><img src="assets/img/tile-configurator.webp" alt="" width="936" height="518" loading="lazy"></div>
+        <div class="tile__body">
+          <p class="tile__eyebrow">Konfigurator 3D</p>
+          <h2 class="tile__title">Wybierz projekt i dostosuj<br> go do swojego wnętrza</h2>
+          <span class="btn btn--dark">Stwórz swój projekt</span>
+        </div>
+      </a>
+
+      <a class="tile tile--catalog" href="#">
+        <div class="tile__media"><img src="assets/img/tile-catalog.webp" alt="" width="936" height="518" loading="lazy"></div>
+        <div class="tile__body">
+          <p class="tile__eyebrow">Katalog</p>
+          <h2 class="tile__title">Odkryj najnowszy katalog</h2>
+          <span class="btn btn--dark">Sprawdź katalog</span>
+        </div>
+      </a>
+
+      <a class="tile tile--app" href="#">
+        <div class="tile__media"><img src="assets/img/tile-app.webp" alt="" width="648" height="518" loading="lazy"></div>
+        <div class="tile__body">
+          <p class="tile__eyebrow">SOLLUX SMART</p>
+          <h2 class="tile__title">Przymierz lampę w aplikacji</h2>
+          <span class="btn btn--dark">Pobierz aplikację na telefon</span>
+        </div>
+      </a>
+    </section>
+    </div>
+
+    <!-- ============ SEKCJA SHADER ============ -->
+    <section class="glow" aria-labelledby="glow-title">
+      <canvas class="glow__canvas" aria-hidden="true" data-shader></canvas>
+      <div class="glow__content">
+        <h2 class="glow__title" id="glow-title">Twoje wnętrze zasługuje na<br> wyjątkowe&nbsp; światło</h2>
+        <a class="btn btn--yellow" href="#">Kup teraz</a>
+        <p class="glow__note">Od 119 zł na oficjalnej stronie<br> producenta SOLLUX</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ STOPKA ============
+       Wymiary 1:1 z Figmy (ramka „Footer”, 1920 × 709):
+       góra 380 px (96 + kolumny 220 + 64), środek 208 px (192 + 16), dół 121 px (32 + 57 + 32) -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__inner footer__columns">
+        <div class="footer__brand">
+          <a class="footer__logo" href="#" aria-label="SOLLUX – strona główna">
+            <svg class="footer__logo-svg" viewBox="0 0 141 26" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M34.12 3.00 L32.75 3.38 L31.00 4.25 L28.25 6.75 L27.75 8.00 L27.12 8.75 L26.50 11.00 L26.38 14.38 L26.88 15.38 L27.25 17.12 L27.75 17.62 L28.00 18.38 L30.62 21.00 L31.75 21.75 L33.12 22.00 L34.50 22.62 L38.00 22.75 L41.12 21.62 L41.62 21.12 L42.38 20.88 L44.75 18.50 L45.00 17.62 L45.88 16.25 L46.50 14.00 L46.50 11.62 L45.75 8.50 L44.00 6.12 L42.25 4.50 L39.00 3.00Z M35.75 6.12 L37.38 6.25 L39.62 7.00 L41.62 8.75 L42.75 10.75 L43.00 11.62 L43.00 14.00 L42.00 16.38 L40.25 18.12 L38.62 19.00 L35.62 19.25 L33.62 18.75 L33.12 18.25 L32.25 17.88 L31.12 16.62 L29.88 14.00 L30.00 10.75 L31.00 9.12 L33.25 7.00Z M5.12 4.12 L4.25 5.00 L3.38 6.38 L3.00 8.12 L3.12 10.25 L4.75 12.75 L5.75 13.62 L8.25 14.50 L17.25 14.50 L18.38 14.75 L19.50 16.12 L19.75 17.25 L18.62 18.88 L17.25 19.25 L3.62 19.12 L3.00 19.88 L3.12 22.50 L3.75 22.88 L18.25 22.75 L19.25 22.50 L20.88 21.50 L21.88 20.50 L22.75 19.12 L23.00 18.25 L22.88 15.00 L22.12 13.50 L21.25 12.50 L19.25 11.25 L18.00 11.00 L8.38 11.00 L7.50 10.62 L7.00 10.12 L6.62 9.25 L6.62 7.88 L7.50 6.75 L8.62 6.12 L20.25 6.25 L21.12 5.88 L21.38 5.38 L21.25 3.25 L20.62 2.88 L7.88 2.88 L6.62 3.12Z M117.12 3.00 L117.12 3.62 L118.38 4.75 L122.12 9.38 L125.00 12.50 L124.75 13.25 L123.12 15.25 L120.25 18.25 L119.88 19.00 L117.12 22.00 L117.00 22.50 L117.25 22.75 L121.50 22.62 L127.25 15.88 L128.12 16.25 L133.62 22.50 L134.12 22.75 L137.00 22.88 L137.88 22.75 L138.12 22.50 L138.00 22.00 L130.75 13.88 L130.25 13.00 L130.25 12.38 L137.88 3.75 L137.88 3.12 L137.62 2.88 L133.50 3.00 L131.88 5.12 L130.12 6.88 L129.00 8.50 L127.50 9.75 L121.50 3.00 L118.00 2.75Z M93.12 3.12 L93.12 14.50 L94.12 17.38 L95.50 19.38 L96.50 20.38 L98.50 21.75 L99.62 22.00 L100.50 22.50 L101.62 22.75 L104.88 22.75 L108.00 21.62 L110.62 19.62 L112.75 16.12 L113.12 14.12 L113.25 3.62 L112.88 3.00 L110.62 2.75 L110.12 3.00 L109.75 3.62 L109.88 13.25 L109.00 15.88 L107.12 18.00 L105.62 18.88 L103.75 19.25 L102.25 19.25 L100.62 18.88 L99.25 18.00 L96.88 15.25 L96.62 13.12 L96.75 3.62 L96.12 2.88 L93.62 2.75Z M71.75 3.00 L71.25 3.75 L71.38 21.38 L71.75 22.00 L72.62 22.75 L89.50 22.75 L89.88 22.25 L89.88 19.88 L89.25 19.12 L75.38 19.25 L75.00 18.88 L74.88 3.38 L74.25 2.75Z M49.88 3.12 L49.62 3.62 L49.75 21.25 L50.12 22.00 L51.25 22.75 L67.88 22.62 L68.12 22.38 L68.12 19.62 L67.62 19.25 L54.12 19.25 L53.25 18.75 L53.25 3.62 L52.62 2.88 L50.75 2.75Z"/></svg>
+          </a>
+          <ul class="socials">
+            <li><a class="socials__btn" href="#" aria-label="SOLLUX na Facebooku"><img src="assets/brand/facebook.png" alt="" width="24" height="24"></a></li>
+            <li><a class="socials__btn" href="#" aria-label="SOLLUX na Instagramie"><img src="assets/brand/instagram.png" alt="" width="24" height="24"></a></li>
+            <li><a class="socials__btn" href="#" aria-label="SOLLUX na TikToku"><img src="assets/brand/tiktok.png" alt="" width="24" height="24"></a></li>
+            <li><a class="socials__btn" href="#" aria-label="SOLLUX na YouTubie"><img src="assets/brand/youtube.png" alt="" width="24" height="24"></a></li>
+          </ul>
+        </div>
+
+        <nav class="footer__links" aria-label="Stopka">
+          <div class="footer__col" style="--col-w: 165">
+            <h3 class="footer__heading">Moje zamówienia</h3>
+            <ul class="footer__list">
+              <li><a href="#">Status zamówienia</a></li>
+              <li><a href="#">Śledzenie przesyłki</a></li>
+              <li><a href="#">Chcę zareklamować produkt</a></li>
+              <li><a href="#">Informacje o wymianie</a></li>
+              <li><a href="#">Kontakt</a></li>
+            </ul>
+          </div>
+          <div class="footer__col" style="--col-w: 170">
+            <h3 class="footer__heading">Moje konto</h3>
+            <ul class="footer__list">
+              <li><a href="#">Zarejestruj się</a></li>
+              <li><a href="#">Koszyk</a></li>
+              <li><a href="#">Listy zakupowe</a></li>
+              <li><a href="#">Lista zakupionych produktów</a></li>
+              <li><a href="#">Historia transakcji</a></li>
+              <li><a href="#">Moje rabaty</a></li>
+            </ul>
+          </div>
+          <div class="footer__col" style="--col-w: 164">
+            <h3 class="footer__heading">Regulaminy</h3>
+            <ul class="footer__list">
+              <li><a href="#">Sposoby wysyłki</a></li>
+              <li><a href="#">Sposoby płatności</a></li>
+              <li><a href="#">Regulamin sklepu</a></li>
+              <li><a href="#">Polityka prywatności</a></li>
+              <li><a href="#">Polityka bezpieczeństwa</a></li>
+              <li><a href="#">Zmień ustawienia ciasteczek</a></li>
+            </ul>
+          </div>
+          <div class="footer__col" style="--col-w: 94">
+            <h3 class="footer__heading">Informacje</h3>
+            <ul class="footer__list">
+              <li><a href="#">O nas</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Kurs światła</a></li>
+              <li><a href="#">Inspiracje</a></li>
+              <li><a href="#">Marka premium</a></li>
+              <li><a href="#">Gwarancja</a></li>
+              <li><a href="#">Konfigurator 3D</a></li>
+            </ul>
+          </div>
+          <div class="footer__col" style="--col-w: 82">
+            <h3 class="footer__heading">Współpraca</h3>
+            <ul class="footer__list">
+              <li><a href="#">Dla Architekta</a></li>
+              <li><a href="#">Modele 3D</a></li>
+              <li><a href="#">Dystrybucja</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="footer__inner footer__boxes">
+        <section class="footer__box" aria-labelledby="footer-pay">
+          <h3 class="footer__heading" id="footer-pay">Płatności i dostawy</h3>
+          <ul class="pay-grid">
+            <li><img src="assets/brand/pay-visa.png" alt="Visa" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-mastercard.png" alt="Mastercard" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-payu.png" alt="PayU" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-paypal.png" alt="PayPal" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-inpost.png" alt="InPost" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-dpd.png" alt="DPD" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-paczka-w-ruchu.png" alt="Paczka w RUCHu" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-dhl.png" alt="DHL" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-gls.png" alt="GLS" width="43" height="24" loading="lazy"></li>
+            <li><img src="assets/brand/pay-poczta-polska.png" alt="Poczta Polska" width="43" height="24" loading="lazy"></li>
+          </ul>
+        </section>
+        <section class="footer__box" aria-labelledby="footer-awards">
+          <h3 class="footer__heading" id="footer-awards">Nagrody</h3>
+          <ul class="awards">
+            <li><img style="--w: 96" src="assets/brand/award-rzetelna-firma.png" alt="Rzetelna Firma" width="96" height="44" loading="lazy"></li>
+            <li><img style="--w: 96" src="assets/brand/award-orly-oswietlenia.png" alt="Orły Oświetlenia" width="96" height="43" loading="lazy"></li>
+            <li><img style="--w: 94" src="assets/brand/award-gazele-biznesu.png" alt="Gazele Biznesu 2021" width="94" height="43" loading="lazy"></li>
+            <li><img style="--w: 96" src="assets/brand/award-solidna-firma-2021.png" alt="Solidna Firma 2021" width="96" height="43" loading="lazy"></li>
+            <li><img style="--w: 96" src="assets/brand/award-polski-produkt.png" alt="Polski Produkt – Gwarancja Jakości" width="96" height="43" loading="lazy"></li>
+            <li><img style="--w: 51" src="assets/brand/award-firma-godna-zaufania.png" alt="Firma Godna Zaufania 2019" width="51" height="42" loading="lazy"></li>
+          </ul>
+        </section>
+        <section class="footer__box" aria-labelledby="footer-shops">
+          <h3 class="footer__heading" id="footer-shops">Nasze sklepy</h3>
+          <ul class="flags">
+            <li><a href="#" aria-label="Sklep SOLLUX – Polska"><img src="assets/brand/flag-pl.png" alt="" width="24" height="24"></a></li>
+            <li><a href="#" aria-label="Sklep SOLLUX – Niemcy"><img src="assets/brand/flag-de.png" alt="" width="24" height="24"></a></li>
+            <li><a href="#" aria-label="Sklep SOLLUX – Hiszpania"><img src="assets/brand/flag-es.png" alt="" width="24" height="24"></a></li>
+            <li><a href="#" aria-label="Sklep SOLLUX – Rumunia"><img src="assets/brand/flag-ro.png" alt="" width="24" height="24"></a></li>
+            <li><a href="#" aria-label="Sklep SOLLUX – Francja"><img src="assets/brand/flag-fr.png" alt="" width="24" height="24"></a></li>
+            <li><a href="#" aria-label="Sklep SOLLUX – Wielka Brytania"><img src="assets/brand/flag-gb.png" alt="" width="24" height="24"></a></li>
+            <li><a href="#" aria-label="Sklep SOLLUX – Holandia"><img src="assets/brand/flag-nl.png" alt="" width="24" height="24"></a></li>
+            <li><a href="#" aria-label="Sklep SOLLUX – Szwecja"><img src="assets/brand/flag-se.png" alt="" width="24" height="24"></a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <div class="footer__caption">
+      <div class="footer__inner">
+        <div class="footer__vat">
+          <p>W sklepie prezentujemy ceny brutto (z VAT). Stawki VAT dla konsumentów z kraju: Polska.</p>
+          <span class="footer__divider" aria-hidden="true"></span>
+          <div class="footer__badges">
+            <a href="#" aria-label="Projekt i wdrożenie: IdoMods"><img src="assets/brand/idomods.png" alt="" width="98" height="36" loading="lazy"></a>
+            <a href="#" aria-label="Sklep działa na platformie IdoSell"><img src="assets/brand/idosell.png" alt="" width="66" height="36" loading="lazy"></a>
+          </div>
+        </div>
+        <ul class="footer__contact">
+          <li>NIP: 6070082443</li>
+          <li class="footer__tel"><a href="tel:+48668806323">+48 668 806 323</a><span>(Pn - Pt 7:00 - 15:00)</span></li>
+          <li><a href="mailto:sklep@sollux.pl">sklep@sollux.pl</a></li>
+          <li>Sollux Lighting Sp. z o.o.</li>
+          <li>Władysława Łokietka 35, 64-840 Budzyń (POLSKA)</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,919 @@
+/* =========================================================
+   SOLLUX – landing page (zadanie rekrutacyjne IdoMods)
+   Czysty CSS, bez kroku budowania.
+
+   Zasady animacji z komentarzy w Figmie (01 Zasady ogólne):
+   - krótkie interakcje (hover): 200–250 ms, większe ruchy: 500–800 ms
+   - jeden easing wszędzie: ease-in-out = cubic-bezier(.4,0,.2,1),
+     ease-out dla powiększeń
+   - animujemy tylko transform i opacity
+   ========================================================= */
+
+/* Red Hat Display (SIL OFL 1.1, licencja w assets/fonts/OFL.txt): czcionka zmienna 300–900, hostowana lokalnie,
+   więc strona wygląda tak samo bez internetu i bez Google Fonts */
+@font-face {
+  font-family: "Red Hat Display";
+  src: url("../assets/fonts/RedHatDisplay-VF.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* kolory */
+  --c-black: #000;
+  --c-ink: #101011;
+  --c-text: #1a1a1a;
+  --c-white: #fff;
+  --c-yellow: #f2bf25;
+  --c-grey-btn: #4a4a4a;
+  --c-tile-blue: #72a3f3;
+  --c-tile-cream: #fdf8eb;
+  --c-tile-grey: #e8e4df;
+  --c-line: #e6e6e6;
+
+  /* ruch */
+  --ease: cubic-bezier(.4, 0, .2, 1);   /* ease-in-out */
+  --ease-out: cubic-bezier(0, 0, .2, 1); /* ease-out dla powiększeń: wariant „decelerate” krzywej powyżej */
+  --t-fast: 200ms;
+  --t-hover: 250ms;
+  --t-big: 600ms;
+  --t-zoom: 500ms;
+
+  /* układ */
+  --container: 1600px;
+  --gutter: clamp(16px, 5vw, 160px);
+  --header-h: 84px;
+  --radius-tile: 24px;
+
+  --font: "Red Hat Display", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* ---------- reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--c-text);
+  background: var(--c-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img, svg, canvas { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+ul { list-style: none; margin: 0; padding: 0; }
+h1, h2, h3, p { margin: 0; }
+
+:focus-visible { outline: 2px solid var(--c-yellow); outline-offset: 3px; }
+
+.container {
+  width: min(var(--container), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed; top: 8px; left: 8px; z-index: 100;
+  padding: 10px 16px; border-radius: 999px;
+  background: var(--c-black); color: var(--c-white);
+  transform: translateY(-150%);
+  transition: transform var(--t-hover) var(--ease);
+}
+.skip-link:focus { transform: none; }
+
+/* ---------- logo (inline SVG, fill = currentColor -> przejmuje kolor nagłówka) ---------- */
+.logo { display: block; width: 149px; height: auto; }
+.logo--dark { color: var(--c-black); width: 138px; }
+
+/* ---------- przyciski ---------- */
+.btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 51px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-size: 16px; font-weight: 700; line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* Zmiana koloru na hover przez warstwę z opacity -> animujemy tylko opacity */
+.btn::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.btn--yellow { background: var(--c-yellow); color: var(--c-ink); }
+.btn--yellow::before { background: #ffd34d; }
+.btn--yellow:hover::before { opacity: 1; }
+
+.btn--dark { background: var(--c-ink); color: var(--c-white); }
+.btn--dark::before { background: var(--c-grey-btn); }
+
+/* =========================================================
+   02 MENU
+   przezroczyste -> #FFFFFF, biały -> czarny, 250 ms ease-in-out,
+   ten sam czas powrotu po zjechaniu kursorem.
+   ========================================================= */
+.header {
+  /* Figma „navbar”: 1920 x 84, padding 16 -> treść 1600 x 52 */
+  position: fixed; inset: 0 0 auto 0;
+  z-index: 50;
+  padding-block: calc((var(--header-h) - 52px) / 2);
+  color: var(--c-white);
+  transition: color var(--t-hover) var(--ease);
+}
+/* białe tło = osobna warstwa, animowana wyłącznie przez opacity */
+.header::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--c-white);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+  opacity: 0;
+  transition: opacity var(--t-hover) var(--ease);
+  z-index: -1;
+}
+.header.is-solid { color: var(--c-black); }
+.header.is-solid::before { opacity: 1; }
+@media (hover: hover) {
+  .header:hover { color: var(--c-black); }
+  .header:hover::before { opacity: 1; }
+}
+/* fokus z klawiatury utrzymuje białe tło; kliknięcie myszą nie, więc nagłówek wraca 250 ms po zjechaniu kursorem */
+.header:has(:focus-visible) { color: var(--c-black); }
+.header:has(:focus-visible)::before { opacity: 1; }
+
+.header__inner {
+  /* „content”: max 1600 x 52, odstęp 64 między grupami: logo + menu (810) | wyszukiwarka (370) | ikony (292) */
+  display: flex; align-items: center;
+  height: 52px;
+  gap: var(--hdr-gap, 64px);
+}
+/* „logo link”: 810 x 48, odstęp 64 między logo a menu */
+.header__start {
+  flex: 0 1 810px;
+  display: flex; align-items: center;
+  height: 48px;
+  gap: var(--hdr-start-gap, 64px);
+}
+.header__logo { flex: none; display: flex; align-items: center; width: 150px; height: 48px; }
+/* Figma „logo”: 150 x 48; ścieżka zwektoryzowana z eksportu warstwy (viewBox = ramka 150 x 48) */
+.header__logo .logo { width: 150px; height: 48px; }
+
+.nav__list { display: flex; align-items: center; gap: var(--nav-gap, 32px); }
+/* Figma „links”: 596 x 17, odstęp 32; pozycja: tekst 14 px Bold (wys. linii 17 px) + odstęp 4 + ikona 16 px.
+   Szerokości pozycji (65 / 63 / 116 / 56 / 73 / 63) są w HTML jako --w: Figma zaokrągla szerokość tekstu w górę do pełnego piksela.
+   Pozycja menu ma 48 px wysokości, ale pole najechania sięga do dołu nagłówka (84 px), żeby dropdown nie znikał w szczelinie */
+.nav__item { position: relative; padding-block: 18px; margin-block: -18px; }
+.nav__link {
+  display: inline-flex; align-items: center; gap: 4px;
+  min-width: var(--w, auto);
+  height: 48px;
+  font-size: 14px; font-weight: 700; line-height: 17px;
+  white-space: nowrap;
+}
+.nav__chev {
+  flex: none;
+  width: 16px; height: 16px;
+  transition: transform var(--t-hover) var(--ease);
+}
+.nav__link::after {
+  /* podkreślenie */
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 22px;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-hover) var(--ease);
+}
+.nav__link:hover::after, .nav__item.is-open > .nav__link::after { transform: scaleX(1); }
+
+.dropdown {
+  position: absolute; top: 100%; left: -24px;
+  min-width: 240px;
+  padding: 20px 24px 24px;
+  background: var(--c-white);
+  color: var(--c-black);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .08);
+  opacity: 0;
+  visibility: hidden; /* zamknięte menu nie jest w kolejności Tab */
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity var(--t-hover) var(--ease), transform var(--t-hover) var(--ease), visibility 0s linear var(--t-hover);
+}
+.dropdown__list { display: grid; gap: 12px; }
+.dropdown__list a { display: flex; align-items: center; gap: 10px; font-size: 15px; opacity: .8; transition: opacity var(--t-fast) var(--ease); }
+.dropdown__list a:hover { opacity: 1; }
+.swatch { width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+
+.nav__item.is-open .dropdown { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition-delay: 0s; }
+.nav__item.is-open .nav__chev { transform: rotate(180deg); }
+@media (hover: hover) {
+  .nav__item.has-dropdown:hover .dropdown { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition-delay: 0s; }
+  .nav__item.has-dropdown:hover .nav__chev { transform: rotate(180deg); }
+}
+
+.search {
+  /* 370 x 52, padding 16 / 24, ramka 1 px, zaokrąglenie 100 px */
+  position: relative;
+  flex: 0 1 370px;
+  min-width: var(--search-min, 220px);
+}
+.search__input {
+  width: 100%; height: 52px;
+  /* Figma: padding 16 / 24 liczony od zewnętrznej krawędzi (ramka leży w środku), w CSS ramka 1 px dochodzi do paddingu */
+  padding: 15px 52px 15px 23px;
+  line-height: 20px;
+  border: 1px solid #e7e7e7; /* Figma: stała ramka #E7E7E7 – na zdjęciu i na białym tle */
+  border-radius: 100px;
+  background: transparent;
+  font-size: 14px; font-weight: 700;
+  outline: none;
+}
+.search__input::placeholder { color: currentColor; opacity: 1; }
+.search__input::-webkit-search-cancel-button { display: none; }
+.search__input:focus-visible { outline: 2px solid var(--c-yellow); outline-offset: 2px; }
+.search__btn {
+  position: absolute; right: 24px; top: 50%; /* ikona w polu paddingu 24 px */
+  width: 24px; height: 24px;
+  transform: translateY(-50%);
+}
+.search__btn svg { width: 24px; height: 24px; }
+
+.header__actions { flex: none; display: flex; align-items: center; gap: 8px; margin-left: auto; }
+/* konfigurator: 180 x 42, padding 11 / 16, odstęp 9, zaokrąglenie 100 px */
+.header__configurator {
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  height: 42px; padding: 11px 16px;
+  border-radius: 100px;
+  min-width: 180px;
+  font-size: 13px; font-weight: 700; line-height: 20px; white-space: nowrap;
+}
+.header__configurator span { translate: 0 1px; } /* linia bazowa jak w Figmie */
+.header__configurator svg { flex: none; width: 20px; height: 20px; }
+/* przyciski okrągłe (konto, koszyk): 48 x 48, ikona 24 px na środku */
+.icon-btn {
+  position: relative; isolation: isolate;
+  display: grid; place-items: center;
+  width: 48px; height: 48px;
+  border-radius: 100px;
+}
+.icon-btn svg { width: 24px; height: 24px; }
+/* hover: delikatne tło w kolorze tekstu, animowane tylko przez opacity */
+.header__configurator::before, .icon-btn:not(.burger)::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease);
+}
+@media (hover: hover) {
+  .header__configurator:hover::before, .icon-btn:not(.burger):hover::before { opacity: .08; }
+}
+
+.burger { display: none; }
+.burger span {
+  position: absolute; left: 13px; right: 13px; height: 2px;
+  background: currentColor; border-radius: 2px;
+  transition: transform var(--t-hover) var(--ease), opacity var(--t-hover) var(--ease);
+}
+.burger span:nth-child(1) { transform: translateY(-7px); }
+.burger span:nth-child(3) { transform: translateY(7px); }
+.burger[aria-expanded="true"] span:nth-child(1) { transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: rotate(-45deg); }
+
+.mobile-menu {
+  position: fixed; inset: var(--header-h) 0 0 0;
+  z-index: 49;
+  padding: 16px var(--gutter) 40px;
+  background: var(--c-white);
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity var(--t-hover) var(--ease), transform var(--t-hover) var(--ease);
+}
+.mobile-menu.is-open { opacity: 1; transform: none; }
+.mobile-menu .search { margin: 0 0 16px; color: var(--c-black); }
+.mobile-menu__list a {
+  display: block; padding: 16px 0;
+  font-size: 20px; font-weight: 500;
+  border-bottom: 1px solid var(--c-line);
+}
+
+/* =========================================================
+   03/04 HERO + SLIDER
+   ========================================================= */
+.hero {
+  /* Geometria strzałek i tekstu – działa przy każdej szerokości ekranu:
+     --edge    = miejsce, w którym zaczyna się kolumna treści 1600 px
+     --arrow-x = odsunięcie strzałki: 40 px na zewnątrz kolumny (72 px przy 1920, jak w Figmie), nigdy bliżej niż 16 px od krawędzi ekranu
+     tekst dostaje dodatkowy lewy padding tylko wtedy, gdy krawędź kolumny jest za blisko strzałki (min. 24 px odstępu) */
+  --arrow-size: 48px;
+  --arrow-gap: 24px;
+  /* --sbw = szerokość klasycznego paska przewijania (ustawiana w main.js; 0 przy paskach nakładkowych), więc obliczenia używają realnej szerokości strony */
+  --page-w: calc(100vw - var(--sbw, 0px));
+  --edge: calc((var(--page-w) - min(var(--container), var(--page-w) - 2 * var(--gutter))) / 2);
+  --arrow-x: max(16px, var(--edge) - var(--arrow-size) - 40px);
+  --copy-shift: max(0px, var(--arrow-x) + var(--arrow-size) + var(--arrow-gap) - var(--edge));
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 620px;
+  max-height: 1200px;
+  overflow: hidden;
+  background: #b3794d;
+  color: var(--c-white);
+  isolation: isolate;
+}
+.hero__slides { position: absolute; inset: 0; }
+
+.slide {
+  position: absolute; inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  /* crossfade 600 ms ease-in-out */
+  transition: opacity var(--t-big) var(--ease), visibility 0s linear var(--t-big);
+}
+.slide.is-active,
+.slide.is-leaving {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--t-big) var(--ease), visibility 0s;
+}
+.slide.is-active { z-index: 2; }
+.slide.is-leaving { z-index: 1; }
+
+/* lekki scale 1.05 -> 1.0 w trakcie przejścia (800 ms, ease-out) */
+.slide__media {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  transform: scale(1.05);
+}
+.slide.is-active .slide__media { transform: scale(1); transition: transform 800ms var(--ease-out); }
+.slide.is-leaving .slide__media { transform: scale(1); }
+
+.slide__img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+/* slajd 2 to zdjęcie wnętrza z dużą ilością detali: przyciemniamy tło pod tekstem */
+.slide__media--shade::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(12, 14, 32, .62) 0%, rgba(12, 14, 32, .38) 32%, rgba(12, 14, 32, 0) 62%),
+              linear-gradient(to bottom, rgba(12, 14, 32, .25), rgba(12, 14, 32, 0) 20%);
+}
+
+/* Scena 1920x1080 skalowana jak „cover”, dzięki czemu lampy zawsze trzymają się skały */
+.stage {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: max(100%, (100svh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  translate: -50% -50%;
+  container-type: inline-size;
+}
+@supports not (width: 1svh) {
+  .stage { width: max(100%, (100vh * 16 / 9)); }
+}
+.stage__bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.stage__lamps, .stage__lights { position: absolute; inset: 0; }
+.stage__lights { pointer-events: none; }
+
+/* Pozycje lamp 1:1 z ramki 1920x1080 w Figmie (w % sceny) */
+.lamp, .light {
+  position: absolute;
+  --w: calc(var(--pw) / 1920 * 100%);
+  left: calc(var(--px) / 1920 * 100%);
+  top: calc(var(--py) / 1080 * 100%);
+  width: calc(var(--pw) / 1920 * 100%);
+  aspect-ratio: var(--pw) / var(--ph);
+  will-change: transform;
+}
+.lamp--beige      { --px: 760;  --py: 85;  --pw: 372; --ph: 419; }
+.lamp--terracotta { --px: 418;  --py: 434; --pw: 423; --ph: 393; }
+.lamp--green      { --px: 1076; --py: 332; --pw: 470; --ph: 428; }
+
+.lamp {
+  pointer-events: none; /* klikalna jest tylko sylwetka lampy (.lamp__hit) */
+  -webkit-tap-highlight-color: transparent;
+}
+/* obszar kliknięcia = otoczka wypukła kanału alfa lampy (przezroczyste rogi PNG nie przechwytują kliknięć) */
+.lamp__hit {
+  position: absolute; inset: 0;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.lamp--beige .lamp__hit { clip-path: polygon(66.4% 8.1%, 71.2% 10.7%, 75.3% 15.5%, 97.3% 51.1%, 98.4% 57.5%, 96.8% 64%, 87.1% 76.4%, 70.4% 87.4%, 50.3% 93.8%, 34.4% 93.1%, 29.3% 90.7%, 25% 86.2%, 4.8% 49.6%, 3.5% 43.9%, 4.8% 37.2%, 8.6% 30.3%, 14.2% 24.3%, 30.6% 13.1%, 49.7% 7.4%); }
+.lamp--terracotta .lamp__hit { clip-path: polygon(66.7% 2.8%, 71.9% 6.6%, 96.5% 48.3%, 96.5% 59.8%, 86.5% 74.6%, 70% 87.3%, 61.2% 91.9%, 44.2% 96.9%, 31.2% 95.2%, 26.5% 90.1%, 5% 49.9%, 4.3% 43.8%, 6.1% 36.9%, 17% 22.1%, 33.1% 10.2%, 52.2% 2.5%); }
+.lamp--green .lamp__hit { clip-path: polygon(93.8% 3%, 93.8% 60%, 33.6% 96.5%, 29.1% 97%, 21.1% 94.6%, 12.1% 89%, 5.1% 81.5%, 1.7% 73.4%, 3.4% 66.6%, 33.8% 17.8%, 46% 5.6%, 86.4% 1.4%); }
+.lamp img {
+  width: 100%; height: 100%;
+  user-select: none;
+  pointer-events: none;
+  transition: transform var(--t-hover) var(--ease-out);
+  filter: drop-shadow(0 30px 40px rgba(60, 25, 5, .18));
+}
+@media (hover: hover) {
+  .lamp:hover img { transform: scale(1.03); }
+}
+.lamp:active img { transform: scale(.97); transition: transform var(--t-fast) var(--ease); }
+.lamp:focus-visible { outline: none; }
+.lamp:focus-visible img { filter: drop-shadow(0 0 0 2px var(--c-yellow)) drop-shadow(0 0 18px rgba(242, 191, 37, .9)); }
+
+/* przyciemnienie sceny, gdy któraś lampa świeci – światło jest wtedy wyraźniejsze */
+.stage__dim {
+  position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 50% 60%, rgba(24, 12, 6, .3), rgba(12, 6, 3, .62));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 700ms var(--ease);
+}
+.hero.has-light .stage__dim { opacity: 1; }
+
+/* warstwy światła – dla każdej lampy: --gx/--gy = środek dyfuzora, --gw/--gh = rozmiar elipsy, --gr = nachylenie, --beam = kierunek wiązki */
+.light.lamp--beige      { --gx: 57.8%; --gy: 68%;   --gw: 66%; --gh: 31%; --gr: -27deg; --beam: 64deg; }
+.light.lamp--terracotta { --gx: 60.3%; --gy: 67.4%; --gw: 56%; --gh: 31.6%; --gr: -29deg; --beam: 60deg; }
+.light.lamp--green      { --gx: 20.2%; --gy: 80.6%; --gw: 30.6%; --gh: 24.3%; --gr: 40deg; --beam: 128deg; }
+
+.light > span {
+  position: absolute;
+  left: var(--gx); top: var(--gy);
+  opacity: 0;
+  pointer-events: none;
+}
+.light__glow {
+  /* rozświetla się sam dyfuzor */
+  width: var(--gw); height: var(--gh);
+  translate: -50% -50%;
+  rotate: var(--gr);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #fffdf4 0%, #fff3cf 55%, rgba(255, 226, 160, .85) 80%, rgba(255, 210, 140, 0) 100%);
+  mix-blend-mode: screen;
+}
+.light__halo {
+  width: calc(var(--gw) * 3.2); aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 228, 170, .55), rgba(255, 196, 120, .18) 45%, rgba(255, 180, 100, 0) 100%);
+  mix-blend-mode: screen;
+}
+.light__beam {
+  /* miękki stożek: gradient stożkowy wokół osi wiązki + zanikanie przez maskę (bez filtra blur) */
+  width: calc(var(--gw) * 5); height: 260%;
+  transform-origin: 50% 0;
+  translate: -50% 0;
+  rotate: calc(var(--beam) - 90deg);
+  background: conic-gradient(from 180deg at 50% 0,
+    rgba(255, 236, 196, .42) 0deg, rgba(255, 230, 185, .28) 12deg, rgba(255, 225, 175, .09) 22deg, rgba(255, 220, 170, 0) 31deg,
+    rgba(255, 220, 170, 0) 329deg, rgba(255, 225, 175, .09) 338deg, rgba(255, 230, 185, .28) 348deg, rgba(255, 236, 196, .42) 360deg);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .55) 35%, transparent 85%);
+          mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .55) 35%, transparent 85%);
+  mix-blend-mode: screen;
+}
+.light.is-on > span { animation: lamp-on 650ms var(--ease) forwards; }
+.light.is-off > span { animation: lamp-off 500ms var(--ease) forwards; }
+@keyframes lamp-on {
+  0%   { opacity: 0; }
+  18%  { opacity: .75; }
+  30%  { opacity: .15; }
+  46%  { opacity: .9; }
+  58%  { opacity: .5; }
+  100% { opacity: 1; }
+}
+@keyframes lamp-off {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* treść slajdu */
+.slide__content {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  pointer-events: none;
+}
+.slide__content { padding-left: var(--copy-shift); }
+.slide__content .btn { pointer-events: auto; }
+.slide__eyebrow { font-size: 16px; font-weight: 400; margin-bottom: 13px; }
+.slide__title {
+  font-size: clamp(40px, 3.125vw + 8px, 56px); /* Figma: 56 px / wysokość linii 100% / odstęp 0 przy 1920 */
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  margin-bottom: 32px;
+  text-wrap: balance;
+}
+/* wejście treści przy zmianie slajdu */
+.slide__content > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--t-big) var(--ease), transform var(--t-big) var(--ease);
+}
+.slide.is-active .slide__content > * { opacity: 1; transform: none; }
+.slide.is-active .slide__content > :nth-child(2) { transition-delay: 60ms; }
+.slide.is-active .slide__content > :nth-child(3) { transition-delay: 120ms; }
+
+/* strzałki */
+.hero__arrow {
+  position: absolute; top: 50%; z-index: 5;
+  display: grid; place-items: center;
+  width: 48px; height: 48px;
+  margin-top: -24px;
+  border-radius: 50%;
+  color: var(--c-white);
+  isolation: isolate;
+}
+.hero__arrow::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, .2);
+  transition: transform var(--t-hover) var(--ease), opacity var(--t-hover) var(--ease);
+}
+.hero__arrow:hover::before { transform: scale(1.1); opacity: .8; }
+.hero__arrow svg { width: 16px; height: 16px; transition: transform var(--t-hover) var(--ease); }
+.hero__arrow--prev { left: var(--arrow-x); }
+.hero__arrow--next { right: var(--arrow-x); }
+.hero__arrow--prev:hover svg { transform: translateX(-2px); }
+.hero__arrow--next:hover svg { transform: translateX(2px); }
+
+/* paginacja z postępem (żółty pasek wypełnia się liniowo przez 3 s) */
+.hero__pagination {
+  position: absolute; left: 50%; bottom: 24px; z-index: 5;
+  display: flex; gap: 4px;
+  translate: -50% 0;
+}
+.dot {
+  position: relative;
+  width: 64px; height: 18px; /* większy obszar kliknięcia */
+}
+.dot::before, .dot__fill {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 8px;
+  height: 2px;
+}
+.dot::before { background: rgba(255, 255, 255, .5); }
+.dot__fill {
+  background: var(--c-yellow);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.dot.is-done .dot__fill { transform: scaleX(1); }
+.dot.is-active .dot__fill { animation: progress var(--slide-delay, 3s) linear forwards; }
+.hero.is-paused .dot.is-active .dot__fill { animation-play-state: paused; }
+.hero.is-static .dot.is-active .dot__fill { animation: none; transform: scaleX(1); }
+@keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ocena */
+.hero__rating {
+  position: absolute; right: var(--arrow-x); bottom: 32px; z-index: 5;
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 47px; padding: 0 25px 0 16px;
+  border-radius: 999px;
+  background: rgba(66, 66, 66, .5);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  font-size: 13px; font-weight: 500;
+}
+.hero__rating-score { font-size: 21px; font-weight: 500; }
+.hero__rating-star { width: 18px; height: 18px; margin: 0 5px 0 -3.5px; }
+
+/* podpowiedź przy kursorze nad lampami */
+.cursor-hint {
+  position: absolute; left: 0; top: 0; z-index: 6;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .92);
+  color: var(--c-ink);
+  font-size: 13px; font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.cursor-hint.is-visible { opacity: 1; }
+
+/* =========================================================
+   USP
+   ========================================================= */
+.vps {
+  /* sekcja „VP's” z Figmy: 1920 x 1424, padding 86 / 16 / 86 / 16 (USP 200 px + siatka 1600 x 1052) */
+  padding: clamp(48px, 5.6vw, 86px) 16px;
+}
+/* szerokość kolumny treści jak w nagłówku (1600 px, na węższych ekranach z marginesem --gutter) */
+.vps .usp__list, .vps .tiles { width: min(var(--container), 100% + 32px - 2 * var(--gutter)); margin-inline: auto; }
+.usp { min-height: 200px; padding-top: 15px; }
+.usp__list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 48px;
+  padding-left: 16px;
+}
+.usp__icon { width: 36px; height: 36px; margin: 0 0 20px -2px; color: var(--c-black); }
+.usp__title { font-size: 22px; font-weight: 700; line-height: 1.2; color: var(--c-text); letter-spacing: -.025em; }
+.usp__text { margin-top: 5px; font-size: 14px; font-weight: 500; color: var(--c-text); }
+
+/* =========================================================
+   05 KAFELKI
+   obraz: scale 1 -> 1.1, 500 ms ease-out (overflow hidden)
+   przycisk: czarny -> #4A4A4A, 200 ms ease-in-out
+   ========================================================= */
+.tiles {
+  display: grid;
+  /* rząd 1: 648 | 936, rząd 2: 936 | 648 (odstęp 16) -> 3 kolumny siatki 648 / 272 / 648 */
+  grid-template-columns: 648fr 272fr 648fr;
+  gap: 16px;
+}
+.tile {
+  position: relative;
+  isolation: isolate;
+  min-height: 518px;
+  border-radius: var(--radius-tile);
+  overflow: hidden;
+  display: flex; align-items: flex-end;
+  /* Safari: zachowuje zaokrąglenie przycinania podczas transformacji obrazu */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+.tile--thoro        { grid-column: 1 / 2; grid-row: 1; background: #cbc6c3; color: var(--c-white); }
+.tile--configurator { grid-column: 2 / 4; grid-row: 1; background: var(--c-tile-blue); color: var(--c-white); }
+.tile--catalog      { grid-column: 1 / 3; grid-row: 2; background: var(--c-tile-cream); color: var(--c-text); }
+.tile--app          { grid-column: 3 / 4; grid-row: 2; background: var(--c-tile-grey); color: var(--c-text); }
+
+.tile__media { position: absolute; inset: 0; z-index: -1; }
+.tile__media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform var(--t-zoom) var(--ease-out);
+}
+.tile:hover .tile__media img,
+.tile:focus-visible .tile__media img { transform: scale(1.1); }
+.tile:hover .btn--dark::before,
+.tile:focus-visible .btn--dark::before { opacity: 1; }
+.tile:focus-visible { outline-offset: 4px; }
+
+.tile__body { width: 100%; padding: 48px; }
+.tile__eyebrow { font-size: 21px; font-weight: 700; line-height: 1.1; margin-bottom: 12px; }
+.tile__title { font-size: 32px; font-weight: 700; line-height: 1.1; margin-bottom: 24px; }
+
+/* =========================================================
+   06 SHADER
+   ========================================================= */
+.glow {
+  position: relative;
+  isolation: isolate;
+  min-height: 835px;
+  display: grid; place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 25% 105%, rgba(242, 191, 37, .9), rgba(242, 191, 37, 0) 70%),
+    radial-gradient(70% 60% at 85% 100%, rgba(170, 130, 30, .8), rgba(170, 130, 30, 0) 70%),
+    var(--c-ink);
+  color: var(--c-white);
+  text-align: center;
+}
+.glow__canvas {
+  position: absolute; inset: 0; z-index: -1;
+  width: 100%; height: 100%;
+  opacity: 0;
+  transition: opacity 800ms var(--ease);
+}
+.glow__canvas.is-ready { opacity: 1; }
+.glow__content { display: grid; justify-items: center; padding: 132px 24px 108px; }
+.glow__title {
+  font-size: clamp(32px, 2.5vw + 8px, 56px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  margin-bottom: 40px;
+}
+.glow__content .btn { height: 56px; padding: 0 26px; font-size: 17px; }
+.glow__note { margin-top: 28px; font-size: 18px; line-height: 1.2; letter-spacing: -.02em; opacity: .9; }
+
+/* =========================================================
+   STOPKA – piksel w piksel z ramką „Footer” w Figmie (1920 × 709)
+   Stopka jest „planszą” 1920 px, którą skaluje jedna jednostka --u:
+     --u = 1 px przy szerokości 1900 px i większej (treść 1600 px na środku),
+     --u = szerokość / 1900 poniżej – układ zostaje taki sam jak w projekcie,
+     tylko proporcjonalnie mniejszy (laptopy 1200–1900 px).
+     Dzielnik 1900, a nie 1920: zapas na klasyczny pasek przewijania (15–17 px) w Windows,
+     dzięki czemu przy ekranie 1920 px stopka ma dokładnie wymiary z Figmy.
+   Poniżej 1200 px stopka przechodzi w układ kolumnowy (tablet / telefon).
+   Wartości z Figma design context:
+   - nagłówki 13 px Bold, linki 13 px Medium, stopka 12 px Medium, kolor #1e1e1e
+   - linie #e7e7e7 (obrys „inside” w Figmie -> inset box-shadow / border-box, bez wpływu na wysokość)
+   - tekst nie schodzi poniżej 10 px (czytelność), reszta skaluje się 1:1
+   ========================================================= */
+.footer {
+  background: var(--c-white);
+  color: #1e1e1e;
+  container-type: inline-size;            /* 1cqw = 1 % szerokości stopki (bez paska przewijania) */
+  --u: min(1px, calc(100vw / 1900));      /* zapas dla starszych przeglądarek bez jednostek cqw */
+}
+@supports (width: 1cqw) {
+  .footer > * { --u: min(1px, calc(100cqw / 1900)); }
+}
+.footer > * {
+  --fs: max(10px, calc(13 * var(--u)));    /* 13 px z Figmy */
+  --fs-s: max(10px, calc(12 * var(--u)));   /* 12 px z Figmy */
+}
+.footer__inner { width: calc(1600 * var(--u)); margin-inline: auto; }
+.footer a { transition: opacity var(--t-fast) var(--ease); }
+.footer a:hover { opacity: .6; }
+
+/* --- góra: logo + social, kolumny linków (Top: pt 96, pb 64) --- */
+.footer__top { padding: calc(96 * var(--u)) 0 calc(64 * var(--u)); }
+.footer__columns { display: flex; justify-content: space-between; align-items: flex-start; }
+
+.footer__brand { display: flex; flex-direction: column; align-items: center; gap: calc(8 * var(--u)); width: calc(198 * var(--u)); flex: none; }
+.footer__logo { display: grid; place-items: center; width: calc(160 * var(--u)); height: calc(44 * var(--u)); color: var(--c-black); }
+.footer__logo-svg { width: calc(141 * var(--u)); height: calc(26 * var(--u)); translate: calc(-1 * var(--u)) 0; } /* glify 1:1 z Figmy (x 191–325, y 108–127) */
+.socials { display: flex; gap: calc(2 * var(--u)); }
+.socials__btn { display: grid; place-items: center; width: calc(48 * var(--u)); height: calc(48 * var(--u)); border-radius: 100px; background: var(--c-white); }
+.socials img { width: calc(24 * var(--u)); height: calc(24 * var(--u)); }
+
+.footer__links { display: flex; gap: calc(96 * var(--u)); align-items: flex-start; flex: none; }
+/* stała szerokość kolumny z Figmy (165 / 170 / 164 / 94 / 82) – pozycje x kolumn nie zależą od czcionki */
+.footer__col { width: calc(var(--col-w) * var(--u)); flex: none; display: flex; flex-direction: column; gap: calc(24 * var(--u)); }
+.footer__heading { font-size: var(--fs); font-weight: 700; line-height: calc(14 * var(--u)); translate: 0 var(--u); } /* +1 px: linia bazowa jak w Figmie (pomiar z prawdziwą czcionką) */
+.footer__list { display: flex; flex-direction: column; gap: calc(14 * var(--u)); }
+.footer__list a { display: block; font-size: var(--fs); font-weight: 500; line-height: calc(14 * var(--u)); white-space: nowrap; translate: 0 var(--u); }
+
+/* --- środek: płatności, nagrody, sklepy (Bottom: pb 16; Content: linia górna, 3 × flex 1, gap 32) --- */
+.footer__bottom { padding-bottom: calc(16 * var(--u)); }
+/* grid zamiast flex: 3 równe kolumny po 512 px niezależnie od różnych paddingów boksów */
+.footer__boxes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: calc(32 * var(--u)); box-shadow: inset 0 1px 0 #e7e7e7; }
+.footer__box {
+  min-width: 0;
+  display: flex; flex-direction: column; align-items: flex-start; gap: calc(24 * var(--u));
+  padding: calc(32 * var(--u));
+  border-right: 1px solid #e7e7e7;
+}
+.footer__box:first-child { padding-left: 0; }
+.footer__box:last-child { border-right: 0; }
+
+/* 320 zamiast 317: zapas na zaokrąglenia, żeby w rzędzie zawsze mieściło się dokładnie 5 logotypów */
+.pay-grid { display: flex; flex-wrap: wrap; align-content: center; align-items: center; gap: calc(8 * var(--u)); width: calc(320 * var(--u)); height: calc(80 * var(--u)); }
+.pay-grid li { display: flex; padding: calc(6 * var(--u)) calc(7 * var(--u)); border-radius: calc(4 * var(--u)); overflow: hidden; }
+.pay-grid img { width: calc(43 * var(--u)); height: calc(24 * var(--u)); }
+
+.awards { display: flex; flex-wrap: wrap; align-content: flex-start; align-items: flex-start; gap: calc(3 * var(--u)); width: calc(294 * var(--u)); }
+.awards img { width: calc(var(--w) * var(--u)); height: auto; } /* proporcje z atrybutów width/height w HTML */
+
+.flags { display: flex; align-items: center; gap: calc(8 * var(--u)); }
+.flags a { display: grid; place-items: center; width: calc(32 * var(--u)); height: calc(32 * var(--u)); border-radius: 100px; overflow: hidden; }
+.flags img { width: calc(24 * var(--u)); height: calc(24 * var(--u)); } /* wycinek z Figmy jest już okrągły */
+
+/* --- dół: VAT + linia + logotypy, dane firmy (Caption: py 32, gap 8) --- */
+.footer__caption { padding: calc(32 * var(--u)) 0; }
+.footer__caption .footer__inner { display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
+.footer__vat, .footer__contact { font-size: var(--fs-s); font-weight: 500; line-height: calc(13 * var(--u)); }
+.footer__vat { display: flex; align-items: center; gap: calc(32 * var(--u)); }
+.footer__vat p { flex: none; white-space: nowrap; translate: 0 var(--u); }
+.footer__divider { flex: 1 0 0; min-width: 1px; height: 1px; background: #e7e7e7; }
+.footer__badges { display: flex; gap: calc(8 * var(--u)); flex: none; }
+.footer__badges img { display: block; height: calc(36 * var(--u)); width: auto; }
+.footer__contact { display: flex; gap: calc(24 * var(--u)); white-space: nowrap; translate: 0 var(--u); }
+.footer__tel { display: flex; gap: calc(16 * var(--u)); }
+
+/* =========================================================
+   RESPONSYWNOŚĆ
+   ========================================================= */
+@media (max-width: 1640px) {
+  /* pole wyszukiwania musi pozostać używalne: konfigurator zostaje okrągłym przyciskiem z samą ikoną */
+  .header__configurator { width: 48px; min-width: 0; height: 48px; padding: 0; }
+  .header__configurator span { display: none; }
+}
+@media (max-width: 1500px) {
+  :root { --hdr-gap: 24px; --hdr-start-gap: 32px; --nav-gap: 24px; --search-min: 180px; }
+  .usp__list { column-gap: 24px; padding-left: 0; }
+  .usp__title { font-size: 19px; }
+}
+@media (max-width: 1280px) {
+  /* nagłówek: nawigacja + wyszukiwarka + akcje nie mieszczą się poniżej ~1280 px -> menu hamburger */
+  :root { --header-h: 68px; }
+  .nav, .header .search, .header__configurator { display: none; }
+  .header__start { flex: none; }
+  .header__actions { margin-left: auto; gap: 4px; margin-right: -12px; }
+  .burger { display: grid; }
+
+}
+@media (max-width: 1100px) {
+  .usp { min-height: 0; padding-bottom: 56px; }
+  .usp__list { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 40px; }
+  /* węższe kafelki: jasna ściana na zdjęciu THORO trafia pod tekst, więc dodajemy delikatny cień (na 1920 px jak w Figmie – bez) */
+  .tile--thoro::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(to top, rgba(10, 12, 25, .55) 0%, rgba(10, 12, 25, .2) 45%, rgba(10, 12, 25, 0) 65%);
+    pointer-events: none;
+  }
+
+  .tiles { grid-template-columns: 1fr 1fr; }
+  .tile--thoro, .tile--configurator, .tile--catalog, .tile--app { grid-column: auto; grid-row: auto; }
+  .tile--configurator, .tile--catalog { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  /* hero: tekst na górze, scena z lampami poniżej w czytelnej skali */
+  .hero { height: auto; min-height: 0; max-height: none; aspect-ratio: auto; }
+  .hero__slides { position: relative; inset: auto; height: max(640px, 100svh); }
+  .stage {
+    top: auto; bottom: 0;
+    width: 175vw;
+    translate: -46% 0;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+  }
+  .slide__content { justify-content: flex-start; padding-top: calc(var(--header-h) + 40px); }
+  .slide__title { font-size: 40px; }
+  .hero__arrow { display: none; }
+  .hero__pagination { bottom: 20px; }
+  .hero__rating { display: none; }
+  .cursor-hint { display: none; }
+
+  .vps { padding-block: 56px; }
+  .usp { min-height: 0; padding-bottom: 40px; }
+  .usp__list { grid-template-columns: 1fr 1fr; column-gap: 20px; padding-left: 0; }
+  .usp__title { font-size: 18px; }
+  .usp__icon { margin-bottom: 14px; }
+
+  .tiles { grid-template-columns: 1fr; }
+  .tile { min-height: 460px; }
+  /* zdjęcia produktów na górze, tekst poniżej na jednolitym tle kafelka */
+  .tile:not(.tile--thoro) .tile__media {
+    bottom: 38%;
+    -webkit-mask-image: linear-gradient(#000 70%, transparent);
+            mask-image: linear-gradient(#000 70%, transparent);
+  }
+  .tile:not(.tile--thoro) .tile__media img { object-position: 88% 50%; }
+  .tile--thoro .tile__media img { object-position: 70% 50%; }
+  .slide__content { padding-left: 0; }
+  .tile__body { padding: 28px; }
+  .tile__title { font-size: 26px; margin-bottom: 24px; }
+  .tile__title br { display: none; }
+  .tile__eyebrow { font-size: 17px; }
+
+  .glow { min-height: 560px; }
+}
+
+/* stopka – poniżej 1200 px (tablet / telefon): jednostka wraca do 1 px, układ kolumnowy */
+@media (max-width: 1199px) {
+  .footer > * { --u: 1px; }
+  .footer__inner { width: min(var(--container), 100% - 2 * var(--gutter)); }
+  /* logo nad kolumnami linków */
+  .footer__columns { flex-direction: column; gap: 48px; }
+  .footer__brand { align-items: flex-start; width: auto; }
+  .footer__logo { place-items: center start; width: auto; }
+  .socials { margin-left: -12px; }
+  .footer__links { flex-wrap: wrap; column-gap: 64px; row-gap: 40px; }
+  /* trzy boksy jeden pod drugim */
+  .footer__boxes { grid-template-columns: 1fr; }
+  .footer__box { padding: 32px 0; border-right: 0; width: 100%; }
+  .footer__box + .footer__box { box-shadow: inset 0 1px 0 #e7e7e7; }
+  .footer__vat { flex-wrap: wrap; row-gap: 16px; }
+  .footer__vat p { white-space: normal; flex: 1 1 100%; }
+  .footer__divider { display: none; }
+  .footer__contact { flex-wrap: wrap; row-gap: 8px; }
+}
+@media (max-width: 760px) {
+  .footer__top { padding-top: 64px; }
+  .footer__links { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 20px; }
+  .footer__col { width: auto; }
+  .footer__list a { white-space: normal; }
+  .flags { flex-wrap: wrap; }
+  .footer__contact { white-space: normal; flex-direction: column; gap: 6px; }
+}
+
+/* ograniczony ruch: zmiany stanu zostają, ruch znika */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+  .lamp, .light { will-change: auto; }
+}
