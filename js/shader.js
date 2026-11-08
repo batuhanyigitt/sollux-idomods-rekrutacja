@@ -99,7 +99,7 @@
 
       // masa światła: czarna góra, jasny dół; krawędź wznosi się w prawo i „oddycha”
       float horizon = mix(0.50, 0.68, uv.x) + 0.05 * loopNoise(vec2(uv.x * 1.3, 0.5), 0.3, 5.0);
-      float mass = smoothstep(horizon, horizon - 0.6, uv.y);
+      float mass = 1.0 - smoothstep(horizon - 0.6, horizon, uv.y);
 
       // fałdy: miękkie grzbiety gaussowskie, których pozycje dryfują w pętli
       float c1 = 0.205 + 0.020 * sin(u_phase)           + 0.015 * loopNoise(vec2(t, 1.0), 0.25, 11.0);
@@ -116,7 +116,7 @@
 
       float L = mass * (0.62 + 0.55 * bright1 + 0.12 * bright2 + 0.10 * bright3
                         - 0.55 * dark1 - 0.30 * dark2 - 0.25 * dark0);
-      L += 0.42 * bright1 * smoothstep(0.66, 0.08, uv.y);  // smuga sięga nieco wyżej
+      L += 0.42 * bright1 * (1.0 - smoothstep(0.08, 0.66, uv.y));  // smuga sięga nieco wyżej
       L = max(L, 0.0);
 
       vec3 ink   = vec3(0.063, 0.063, 0.067);   // #101011
