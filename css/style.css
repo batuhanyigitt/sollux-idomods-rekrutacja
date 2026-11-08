@@ -9,15 +9,7 @@
    - animujemy tylko transform i opacity
    ========================================================= */
 
-/* Red Hat Display (SIL OFL 1.1, licencja w assets/fonts/OFL.txt): czcionka zmienna 300–900, hostowana lokalnie,
-   więc strona wygląda tak samo bez internetu i bez Google Fonts */
-@font-face {
-  font-family: "Red Hat Display";
-  src: url("../assets/fonts/RedHatDisplay-VF.woff2") format("woff2");
-  font-weight: 300 900;
-  font-style: normal;
-  font-display: swap;
-}
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300..900&display=swap");
 
 :root {
   /* kolory */
@@ -350,16 +342,24 @@ h1, h2, h3, p { margin: 0; }
   opacity: 0;
   visibility: hidden;
   /* crossfade 600 ms ease-in-out */
-  transition: opacity var(--t-big) var(--ease), visibility 0s linear var(--t-big);
-}
-.slide.is-active,
-.slide.is-leaving {
-  opacity: 1;
-  visibility: visible;
   transition: opacity var(--t-big) var(--ease), visibility 0s;
 }
-.slide.is-active { z-index: 2; }
-.slide.is-leaving { z-index: 1; }
+.slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+  transition: opacity var(--t-big) var(--ease), visibility 0s;
+}
+/* Fade the outgoing slide at the SAME time as the incoming slide.
+   Previously, is-leaving kept opacity:1 for 800ms, then the base selector
+   faded it for another 600ms — causing a ghost image on narrow screens. */
+.slide.is-leaving {
+  opacity: 0;
+  visibility: visible;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity var(--t-big) var(--ease), visibility 0s;
+}
 
 /* lekki scale 1.05 -> 1.0 w trakcie przejścia (800 ms, ease-out) */
 .slide__media {

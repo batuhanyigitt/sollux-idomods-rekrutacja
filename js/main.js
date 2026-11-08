@@ -123,19 +123,34 @@
     fill.style.animation = '';
   };
 
+  // One exit timer per slide. Cancel stale timers during rapid swipes/taps.
+  const leavingTimers = new WeakMap();
+  const clearLeaving = (slide) => {
+    const timer = leavingTimers.get(slide);
+    if (timer !== undefined) clearTimeout(timer);
+    leavingTimers.delete(slide);
+    slide.classList.remove('is-leaving');
+  };
+
   function goTo(index) {
     const next = (index + slides.length) % slides.length;
     if (next === current) return;
     const prevSlide = slides[current];
     const nextSlide = slides[next];
 
+    // Re-entering a previously departing slide must cancel its pending cleanup.
+    clearLeaving(nextSlide);
     prevSlide.classList.remove('is-active');
     prevSlide.classList.add('is-leaving');
     prevSlide.setAttribute('aria-hidden', 'true');
     setFocusable(prevSlide, false);
-    setTimeout(() => prevSlide.classList.remove('is-leaving'), 800);
+    // CSS handles the 600ms fade in parallel with the incoming slide.
+    const timer = setTimeout(() => {
+      prevSlide.classList.remove('is-leaving');
+      leavingTimers.delete(prevSlide);
+    }, 650);
+    leavingTimers.set(prevSlide, timer);
 
-    nextSlide.classList.remove('is-leaving');
     nextSlide.classList.add('is-active');
     nextSlide.removeAttribute('aria-hidden');
     setFocusable(nextSlide, true);

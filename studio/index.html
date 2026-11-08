@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>SOLLUX Studio — wizualny edytor treści</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="editor.css">
+  <script src="editor.js" defer></script>
+</head>
+<body>
+  <div class="studio">
+    <header class="topbar">
+      <div class="brand"><div class="brand__mark">S<span>✳</span></div><div><strong>SOLLUX <span>STUDIO</span></strong><small>Live content management <span class="brand__edition">/ CMS 2.0</span></small></div></div>
+      <div class="topbar__project"><span class="live-indicator" aria-hidden="true"></span> Projekt: <strong>SOLLUX Landing</strong> <span class="pill">CMS ONLINE</span></div>
+      <div class="topbar__actions"><span id="saveStatus" role="status">Ładowanie projektu…</span><button id="resetAll" class="btn btn--ghost" type="button">Przywróć oryginał</button><button id="exportZip" class="btn btn--primary" type="button"><span>↗</span> Opublikuj zmiany</button></div>
+    </header>
+    <aside class="sidebar" aria-label="Narzędzia edytora">
+      <div class="sidebar__intro"><span class="eyebrow">WORKSPACE / 01</span><h1>Twój projekt.<br><em>Twoje zasady.</em></h1><p>Wybierz element w podglądzie lub na liście. Zmiany zobaczysz od razu.</p></div>
+      <div class="sidebar__nav" role="tablist" aria-label="Sekcje edytora">
+        <button class="tab is-active" data-tab="content" role="tab" aria-selected="true" type="button"><span class="tab__icon">▤</span> Treści <span id="textCount" class="tab__count"></span></button>
+        <button class="tab" data-tab="media" role="tab" aria-selected="false" type="button"><span class="tab__icon">▧</span> Obrazy <span id="imageCount" class="tab__count"></span></button>
+        <button class="tab" data-tab="theme" role="tab" aria-selected="false" type="button"><span class="tab__icon">◉</span> Kolory <span class="tab__count">07</span></button>
+        <button class="tab" data-tab="blocks" role="tab" aria-selected="false" type="button"><span class="tab__icon">⊞</span> Bloki <span id="blocksCount" class="tab__count">0</span></button>
+        <button class="tab" data-tab="publish" role="tab" aria-selected="false" type="button"><span class="tab__icon">↗</span> Publikacja</button>
+      </div>
+      <div class="sidebar__panel" id="panel-content" role="tabpanel">
+        <div class="section-heading"><h2>Edytuj tekst</h2><small id="textTotal"></small></div>
+        <label for="itemSearch" class="sr-only">Szukaj treści</label><input id="itemSearch" class="input input--search" type="search" placeholder="Szukaj w treści strony…">
+        <div class="item-list" id="textItems" aria-label="Elementy tekstowe"></div>
+      </div>
+      <div class="sidebar__panel" id="panel-media" role="tabpanel" hidden>
+        <div class="section-heading"><h2>Biblioteka obrazów</h2><small id="imageTotal"></small></div>
+        <p class="panel-note">Kliknij obraz, by go zastąpić plikiem lub adresem URL.</p>
+        <div class="image-grid" id="imageItems"></div>
+      </div>
+      <div class="sidebar__panel" id="panel-theme" role="tabpanel" hidden>
+        <div class="section-heading"><h2>Kolory marki</h2><small>Globalne CSS variables</small></div>
+        <p class="panel-note">Zmiany obejmują przyciski, sekcje i elementy korzystające ze zmiennych CSS.</p>
+        <div class="theme-list" id="themeItems"></div>
+      </div>
+      <div class="sidebar__panel" id="panel-blocks" role="tabpanel" hidden>
+        <div class="section-heading"><h2>Bloki Gutenberg</h2><small>Układ modułowy</small></div>
+        <p class="panel-note">Dodawaj nowe sekcje, zmieniaj ich kolejność i treść. Każda zmiana jest widoczna natychmiast.</p>
+        <label class="field-label" for="addBlockType">Typ nowego bloku</label>
+        <select id="addBlockType" class="input"><option value="text">Tekst / opis</option><option value="split">Obraz + tekst</option><option value="cta">CTA / przycisk</option></select>
+        <button id="addBlock" class="btn btn--primary" type="button" style="width:100%;margin:12px 0 16px">＋ Dodaj blok</button>
+        <div id="blockItems" class="cms-block-list"></div>
+      </div>
+      <div class="sidebar__panel" id="panel-publish" role="tabpanel" hidden>
+        <div class="section-heading"><h2>Publikacja treści</h2><small>Netlify Blobs / localhost</small></div>
+        <div class="publish-note"><strong>Wersja robocza ≠ opublikowana</strong><p>Podgląd reaguje natychmiast. Zmiany są automatycznie zapisywane jako szkic na serwerze. Kliknij „Opublikuj”, aby aktualizacja pojawiła się na stronie publicznej — bez eksportowania ZIP.</p></div>
+        <button class="action-row" id="exportZipSecondary" type="button"><span>●</span><span><strong>Opublikuj teraz</strong><small>Udostępnij zmiany wszystkim użytkownikom</small></span></button>
+        <button class="action-row" id="exportJson" type="button"><span>{ }</span><span><strong>Pobierz kopię JSON</strong><small>Eksport wersji roboczej</small></span></button>
+        <label class="action-row" for="importJson"><span>⇪</span><span><strong>Importuj szkic JSON</strong><small>Przywróć kopię projektu</small></span></label>
+        <input id="importJson" type="file" accept=".json,application/json" hidden>
+        <button id="logoutCMS" type="button" class="btn btn--ghost" style="width:100%;margin-top:14px">Wyloguj się</button>
+        <div class="publish-note publish-note--subtle"><strong>Ochrona edytora</strong><p>Zapisywanie i publikowanie wymaga autoryzacji. Goście widzą tylko opublikowaną wersję.</p></div>
+      </div>
+      <div class="sidebar__bottom"><div class="key-hint"><kbd>⌘</kbd> + <kbd>S</kbd> &nbsp; Kopia JSON</div><span>Autoryzacja · Live publishing</span></div>
+    </aside>
+    <section class="workspace" aria-label="Podgląd edytowanej strony">
+      <div class="workspace__toolbar">
+        <div class="breadcrumb"><span class="eyebrow">LIVE CANVAS</span><strong>index.html</strong><span class="status-dot"></span><span>Podgląd na żywo</span></div>
+        <div class="devices" role="group" aria-label="Rozmiar podglądu">
+          <button data-device="desktop" class="device is-active" type="button" title="Desktop"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 21h6M12 17v4"/></svg><span>Desktop</span></button>
+          <button data-device="tablet" class="device" type="button" title="Tablet"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M10 19h4"/></svg><span>Tablet</span></button>
+          <button data-device="mobile" class="device" type="button" title="Mobile"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 19h2"/></svg><span>Mobile</span></button>
+        </div>
+        <div class="toolbar-end"><button id="undoChange" class="btn btn--icon" type="button" title="Cofnij zmianę" aria-label="Cofnij zmianę">↶</button><button id="redoChange" class="btn btn--icon" type="button" title="Ponów zmianę" aria-label="Ponów zmianę">↷</button><button id="modeButton" class="btn btn--outline is-active" type="button" aria-pressed="true"><span>✎</span> Wybieranie</button><button id="refreshPreview" class="btn btn--icon" type="button" title="Odśwież podgląd" aria-label="Odśwież podgląd">↻</button></div>
+      </div>
+      <div class="canvas"><div class="canvas__inner" id="canvasInner"><iframe id="pageFrame" title="Podgląd strony SOLLUX" src="../index.html?studio-preview=1" loading="eager"></iframe></div><span class="canvas__label" id="canvasLabel">Responsive · 100% szerokości</span></div>
+      <div class="workspace__footer"><span><span class="cursor-indicator"></span> <span id="modeDescription">Kliknij tekst lub obraz, aby rozpocząć edycję</span></span><span><span id="countChanges">0 zmian</span> <span class="workspace__sep">/</span> Autozapis na serwerze</span></div>
+    </section>
+    <aside class="inspector" aria-label="Ustawienia zaznaczonego elementu">
+      <div class="inspector__heading"><button id="closeInspector" class="close-inspector" type="button" aria-label="Zamknij panel">×</button><span class="eyebrow">INSPECTOR / 02</span><h2>Właściwości</h2><p>Precyzyjnie dostosuj zaznaczony element.</p></div>
+      <div id="inspectorEmpty" class="inspector__empty"><div class="empty-illustration">⌖</div><h3>Zaznacz element</h3><p>Kliknij dowolny tekst lub obraz na podglądzie, aby zobaczyć dostępne opcje.</p><span class="empty-tip">Wskazówka: wybierz „Interakcje”, aby wypróbować slider i lampy.</span></div>
+      <div id="inspectorEdit" hidden>
+        <div class="selected-element"><span id="selectedType">TEKST</span><strong id="selectedTitle"></strong><code id="selectedPath" title="Selektor elementu"></code></div>
+        <div id="textEditGroup" hidden><label class="field-label" for="textEdit">Treść elementu</label><textarea id="textEdit" rows="5" spellcheck="true" placeholder="Wpisz tekst…"></textarea><div class="field-hint">Nowa linia = nowy wiersz. Zmiany są widoczne na żywo.</div></div>
+        <div id="imageEditGroup" hidden><div class="field-label">Obraz</div><div class="inspector__image-preview"><img id="selectedImage" alt="Podgląd wybranego obrazu"></div><label class="upload-button" for="imageUpload">⇧ &nbsp; Wybierz obraz z komputera</label><input id="imageUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif" hidden><div class="field-hint">PNG, JPG, WebP, GIF lub AVIF; maks. 3 MB.</div><label class="field-label" for="imageUrl">Lub adres URL</label><div class="text-button"><input id="imageUrl" class="input" type="url" placeholder="https://…"><button type="button" id="applyImageUrl" class="btn btn--small">Zastosuj</button></div></div>
+        <div id="linkEditGroup" hidden><label class="field-label" for="linkEdit">Adres docelowy linku</label><input id="linkEdit" class="input" type="text" placeholder="https://… lub #sekcja"></div>
+        <div id="blockEditGroup" hidden>
+          <div class="field-label" style="margin-bottom:14px">Pola bloku (ACF)</div>
+          <div id="blockFields"></div>
+          <button id="removeBlock" class="btn btn--reset" type="button">Usuń wybrany blok</button>
+        </div>
+        <div id="elementStyleGroup"><div class="inspector__divider"></div>
+        <div class="field-label">Wygląd elementu</div>
+        <div class="color-field"><label for="colorEdit">Kolor tekstu</label><div class="color-control"><input id="colorEdit" type="color" value="#ffffff"><output id="colorText">#ffffff</output></div></div>
+        <div id="fontEditGroup" class="color-field"><label for="fontEdit">Rozmiar czcionki</label><div class="number-control"><input id="fontEdit" type="number" min="9" max="128" step="1"><span>px</span></div></div>
+        <div class="color-field"><label for="bgEdit">Tło elementu</label><div class="color-control"><input id="bgEdit" type="color" value="#ffffff"><output id="bgText">#ffffff</output></div></div>
+        <p class="field-hint">Kolor tła jest ustawiany tylko dla wybranego elementu. Globalną kolorystykę zmienisz w sekcji „Kolory”.</p>
+        <button id="clearElement" class="btn btn--reset" type="button">↶ &nbsp; Przywróć ten element</button></div>
+      </div>
+      <div class="inspector__bottom"><span class="help-dot">?</span> Wersje robocze są zapisywane na serwerze; opublikuj, gdy będą gotowe.</div>
+    </aside>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
