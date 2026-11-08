@@ -1,103 +1,237 @@
-# SOLLUX Studio CMS
+# SOLLUX — landing page + Studio CMS
 
-**Osobny panel zarządzania treścią dla istniejącej strony SOLLUX**, inspirowany przepływem pracy Gutenberg + ACF. Frontend zachowuje projekt Figma, a edytor umożliwia zmianę treści bez edytowania kodu i bez ponownego generowania ZIP przy każdej publikacji.
+Responsywna implementacja strony SOLLUX przygotowana na podstawie projektu Figma do zadania rekrutacyjnego **IdoMods — Frontend + AI Developer**. Projekt obejmuje publiczny landing page, pięć stron z dokumentacją interaktywną oraz **osobny panel administracyjny SOLLUX Studio** do wizualnego zarządzania treścią.
 
-## Dostępne funkcje
+Frontend został napisany w **HTML, CSS i vanilla JavaScript**. Dodatkowy, autorski system CMS inspirowany sposobem pracy WordPress Gutenberg i ACF nie wymaga instalacji WordPressa. Zmiany treści są zapisywane w Netlify Blobs i publikowane bez ręcznego edytowania HTML ani ponownego przesyłania plików ZIP.
 
-- **Panel:** `/studio/`, ekran logowania: `/studio/login.html`. To osobna strona i panel w tym samym serwisie, niewidoczny w nawigacji publicznej; dane i operacje CMS są chronione uwierzytelnianiem.
-- **Podgląd na żywo:** kliknij tekst lub obraz w prawdziwej stronie w ramce i zmień go w inspektorze. Reakcja jest natychmiastowa.
-- **Pola jak ACF:** tekst, adres linku, kolor, rozmiar fontu, obraz oraz kolory globalne.
-- **Bloki jak Gutenberg:** dodaj *tekst*, *obraz + tekst* lub *CTA*, edytuj pola, zmień kolejność (↑/↓) lub ukryj blok.
-- **Media:** PNG/JPEG/WebP/GIF/AVIF do 3 MB; obrazy są zapisywane na serwerze.
-- **Szkice:** automatyczny zapis zmian w backendzie; nie są widoczne dla odwiedzających.
-- **Publikacja:** przycisk **Opublikuj zmiany** przenosi szkic do wersji publicznej. Nowe wejścia zobaczą go od razu; otwarte karty strony publicznej odświeżają treść co około 8 sekund.
-- **Historia edycji:** cofanie i ponawianie w bieżącej sesji. Eksport/import JSON jako kopia zapasowa.
+> **Dla osoby oceniającej:** zacznij od strony głównej, następnie otwórz przegląd techniczny i panel Studio. Dostęp do panelu wymaga danych logowania przekazywanych **oddzielną, prywatną wiadomością** — hasła nie ma w publicznym repozytorium.
 
-## Lokalny start (macOS / Windows / Linux)
+## 1. Wszystkie adresy i mapa projektu
 
-Wymagany: **Node.js 22.12+** (wymóg `@netlify/blobs` 11.x). Plik `.nvmrc` wybiera Node 22 na Netlify. Nie potrzeba instalacji zależności do uruchomienia prostego lokalnego serwera; dla wdrożenia Netlify zainstaluj zależności podczas buildu.
+| Część projektu | Adres | Co można tam zobaczyć? |
+| --- | --- | --- |
+| **Strona główna SOLLUX** | https://sollux-batuhan-task.netlify.app/ | Oryginalny landing page, animowany hero, slider, sekcje produktowe, interakcje i RWD |
+| **Engineering** | https://sollux-batuhan-task.netlify.app/engineering.html | Przegląd architektury i najważniejszych decyzji technicznych |
+| **Experience** | https://sollux-batuhan-task.netlify.app/experience.html | Interaktywny pokaz elementów strony i zachowań interfejsu |
+| **System** | https://sollux-batuhan-task.netlify.app/system.html | Kolory, typografia, komponenty, zasoby i zasady wizualne |
+| **Quality** | https://sollux-batuhan-task.netlify.app/quality.html | Kontrole działania uruchamiane w przeglądarce |
+| **Process** | https://sollux-batuhan-task.netlify.app/process.html | Etapy realizacji, przyjęte rozwiązania i ograniczenia |
+| **Studio — logowanie** | https://sollux-batuhan-task.netlify.app/studio/login.html | Logowanie do CMS na podstawie nazwy użytkownika i hasła |
+| **Studio — edytor** | https://sollux-batuhan-task.netlify.app/studio/ | Wizualna edycja treści, obrazów, kolorów i bloków |
+| **Repozytorium GitHub** | https://github.com/batuhanyigitt/sollux-idomods-rekrutacja | Kod źródłowy, konfiguracja wdrożenia i niniejsza instrukcja |
+| **Projekt Figma** | https://www.figma.com/design/0IEndSXVS1EK98fLXYNnYN/IdoMods-rekrutacja-frontend-AI?node-id=0-1 | Materiał referencyjny do zadania rekrutacyjnego |
+
+**Ważne rozróżnienie:** Studio edytuje **publiczny landing page** (ścieżka `/`). Strony `engineering.html`, `experience.html`, `system.html`, `quality.html` i `process.html` są osobnymi stronami dokumentacyjnymi; ich zawartość nie jest edytowana przez aktualny panel CMS. Panel Studio nie jest elementem publicznego menu nawigacyjnego.
+
+## 2. Jak działa publiczna strona?
+
+- **Hero:** interaktywne lampy reagujące na kursor, animacje, paralaksa i sterowanie światłem.
+- **Slider:** automatyczne przejścia, ręczna zmiana slajdów oraz pasek postępu. Zachowanie zostało dostosowane do urządzeń mobilnych.
+- **Nawigacja i sekcje:** responsywne menu, układy produktowe, kafelki i przyciski z efektami interakcji.
+- **WebGL/GLSL:** animowane tło wybranej sekcji z wariantem zastępczym, gdy urządzenie nie obsługuje WebGL.
+- **Dostępność i RWD:** semantyczny HTML, obsługa klawiatury dla odpowiednich elementów i reguły dopasowania do szerokości ekranu.
+
+Pięć podstron technicznych stanowi **dodatkowe opracowanie ponad wymagany landing page**. Są przeznaczone do oceny wdrożenia i zastosowanych rozwiązań, a nie do zarządzania treścią strony.
+
+## 3. SOLLUX Studio — instrukcja krok po kroku
+
+### 3.1. Logowanie
+
+1. Otwórz: **https://sollux-batuhan-task.netlify.app/studio/login.html**.
+2. Wprowadź nazwę użytkownika i hasło otrzymane w prywatnej wiadomości.
+3. Wybierz **Zaloguj się do panelu**.
+4. Po pomyślnym uwierzytelnieniu zostaniesz przeniesiony do `/studio/`.
+
+Dane logowania są konfigurowane **po stronie Netlify**. Nie trzeba zakładać konta WordPress ani instalować żadnego oprogramowania. Sesja administratora jest przechowywana w podpisanym ciasteczku i wygasa po 12 godzinach.
+
+### 3.2. Układ edytora
+
+Panel jest podzielony na trzy części:
+
+1. **Lewy panel:** zakładki `Treści`, `Obrazy`, `Kolory`, `Bloki`, `Publikacja`.
+2. **Środkowy obszar:** rzeczywista strona SOLLUX w podglądzie na żywo. Możesz przełączać szerokości **Desktop / Tablet / Mobile**.
+3. **Prawy inspektor:** właściwości zaznaczonego elementu, np. tekst, kolor, wielkość fontu, adres linku lub obraz.
+
+Kliknij tekst albo obraz w środkowym podglądzie, aby wybrać element, lub znajdź go w lewej zakładce. Zmiana pola w inspektorze od razu aktualizuje podgląd.
+
+### 3.3. Zmiana tekstu i linków
+
+1. Otwórz `Treści` lub wybierz dany tekst w podglądzie.
+2. Zmień treść w prawym inspektorze.
+3. W przypadku elementów z linkiem możesz zmienić jego docelowy adres.
+4. Jeżeli element udostępnia ustawienia stylu, dopasuj kolor i wielkość czcionki.
+5. Sprawdź efekt w podglądzie Desktop / Tablet / Mobile.
+
+### 3.4. Zmiana obrazów
+
+1. Wejdź do `Obrazy` albo kliknij obraz w podglądzie.
+2. Wybierz plik z komputera lub wpisz odpowiedni adres URL.
+3. Dozwolone formaty uploadu: **PNG, JPEG, WebP, GIF i AVIF**.
+4. Maksymalny rozmiar pojedynczego przesyłanego pliku: **3 MB**.
+5. Obraz zostaje zapisany na serwerze i pojawia się w podglądzie; ostateczna publikacja wymaga użycia przycisku publikowania.
+
+### 3.5. Kolory
+
+W zakładce `Kolory` można zmieniać globalne zmienne CSS wykorzystywane przez stronę. Zmiany dotyczą elementów, które korzystają z tych zmiennych. Dodatkowo prawy inspektor umożliwia ustawianie stylów wybranego elementu.
+
+### 3.6. Bloki — sposób pracy inspirowany Gutenberg
+
+1. Otwórz zakładkę `Bloki`.
+2. Wybierz jeden z typów: **Tekst / opis**, **Obraz + tekst**, **CTA / przycisk**.
+3. Kliknij `Dodaj blok`.
+4. Edytuj tytuł, opis, obraz, kolory i — jeśli dotyczy — link przycisku.
+5. Użyj przycisków **↑ / ↓**, aby zmienić kolejność; blok można także ukryć lub usunąć.
+
+Nowe bloki są renderowane jako moduły w części strony **przed stopką**; nie jest to swobodny edytor układu wszystkich istniejących sekcji Figma. Limit w aktualnej wersji: **40 bloków**.
+
+### 3.7. Szkic, automatyczny zapis i publikacja
+
+**Podgląd na żywo ≠ wersja publiczna.**
+
+1. Zmiany są widoczne od razu w edytorze.
+2. CMS automatycznie zapisuje je na serwerze jako **szkic**.
+3. Po sprawdzeniu efektu kliknij **Opublikuj zmiany** lub w `Publikacja` wybierz **Opublikuj teraz**.
+4. Dopiero ta operacja przenosi szkic do wersji widocznej na publicznej stronie.
+5. Nowi odwiedzający pobierają opublikowaną treść po wejściu na stronę. Otwarte karty publicznej strony synchronizują ją okresowo — mniej więcej co **8 sekund**, gdy karta jest aktywna.
+
+W zakładce `Publikacja` dostępne są także **eksport szkicu do JSON** i **import JSON**. Kopia JSON to kopia modelu treści, a nie archiwum całego kodu strony. W bieżącej sesji można korzystać z cofania/ponawiania. Przycisku `Przywróć oryginał` używaj ostrożnie: przywraca domyślną zawartość w edytorze; zmiana może zostać zapisana jako szkic i następnie opublikowana.
+
+### 3.8. Wylogowanie
+
+Otwórz zakładkę `Publikacja` i wybierz **Wyloguj się**.
+
+## 4. Architektura i przepływ danych
+
+```text
+Przeglądarka odwiedzającego
+    │
+    └── Strona główna HTML/CSS/JS
+           └── cms-public.js → GET published
+                                 │
+Netlify Functions ───────────────┼── Netlify Blobs: wersja opublikowana
+           ▲                     │
+           │                     └── osobny zapis danych produkcyjnych / podglądowych
+           │
+Studio CMS (wymaga logowania)
+    ├── podgląd WYSIWYG
+    ├── automatyczny zapis → draft
+    ├── przesyłanie obrazów
+    └── „Opublikuj” → published
+```
+
+- **Frontend:** HTML5, CSS3, JavaScript, WebGL/GLSL.
+- **Panel:** `studio/index.html` + `studio/editor.js` + `studio/editor.css`.
+- **Warstwa treści:** `js/content-runtime.js` i `js/cms-public.js`.
+- **API:** `netlify/functions/cms.mjs`, walidacja i sesje w `cms-shared.mjs`.
+- **Przechowywanie:** Netlify Blobs; produkcja i deploy preview używają osobnych nazw magazynów.
+- **Build:** `build.mjs` tworzy `dist/`; Netlify Functions są wdrażane oddzielnie.
+- **Aktualizacje treści:** nie wymagają commitów do GitHuba. **Aktualizacje kodu** wymagają normalnego wdrożenia nowej wersji.
+
+## 5. Uruchomienie lokalne
+
+Wymagania: **Node.js 22.12+**, npm. Klonuj repozytorium i uruchom:
 
 ```bash
+git clone https://github.com/batuhanyigitt/sollux-idomods-rekrutacja.git
+cd sollux-idomods-rekrutacja
+npm install
 npm start
 ```
 
-W trybie lokalnym otrzymasz stałe konto demonstracyjne **użytkownik: `admin` / hasło: `1`**. Działa wyłącznie na `127.0.0.1` i służy do szybkiego testowania. Otwórz:
+Otwórz:
+- Frontend: **http://127.0.0.1:4173/**
+- Panel: **http://127.0.0.1:4173/studio/**
 
-- Publiczna strona: `http://127.0.0.1:4173/`
-- Panel CMS: `http://127.0.0.1:4173/studio/`
+Wyłącznie do lokalnej demonstracji domyślny login to `admin`, a hasło to `1`. **Te dane nie dotyczą Netlify production.** Można ustawić inne dane lokalnie przez zmienne środowiskowe. Dane robocze lokalnego CMS są zapisywane w `.cms-local/` (folder nie jest dodawany do Git).
 
-Jeśli chcesz mieć stałe hasło pomiędzy restartami:
-
-```bash
-CMS_ADMIN_USERNAME='admin' CMS_ADMIN_PASSWORD='twoje-mocne-haslo' npm start
-```
-
-**Nie dodawaj hasła do GitHuba, README ani kodu.** Lokalna baza w `.cms-local/` jest ignorowana przez Git. Serwer nasłuchuje tylko na `127.0.0.1`.
-
-## Publikacja na Netlify — istniejący projekt
-
-> **Ważne:** wcześniejszy deploy wykonany przez Netlify Drop udostępniał wyłącznie pliki statyczne. Wersja CMS wymaga wdrożenia **Netlify Functions**, dlatego samo przeciągnięcie katalogu `dist` do Netlify nie wystarcza.
-
-1. Prześlij ten projekt do repozytorium GitHub **bez `.env`, `.cms-local/` i `node_modules/`**. Zalecany jest osobny branch albo osobne repo dla CMS, aby nie nadpisać działającej wersji rekrutacyjnej przed sprawdzeniem wdrożenia.
-2. W Netlify połącz repozytorium z istniejącym projektem (`Project configuration → Build & deploy → Continuous deployment`) albo użyj Netlify CLI do wdrożenia na tym samym projekcie.
-3. W ustawieniach zmiennych środowiskowych projektu ustaw:
-   - `CMS_ADMIN_USERNAME` — `admin` (lub inna wybrana nazwa użytkownika).
-   - `CMS_ADMIN_PASSWORD` — długie, niepowtarzalne hasło (min. 12 znaków).
-   - `CMS_SESSION_SECRET` — losowy sekret o długości min. 32 znaków (np. wynik `openssl rand -hex 32`).
-   - **Wyłącznie do demonstracji na chronionym środowisku:** aby pozwolić na hasło `1`, ustaw również `CMS_ALLOW_WEAK_DEMO_PASSWORD=true`. **Ostrzeżenie:** `admin / 1` na publicznie dostępnej stronie umożliwia nieuprawnionym osobom zmianę i publikację treści. Zdecydowanie zaleca się długie hasło lub dodatkowe ograniczenie dostępu do strony.
-4. Build command: `npm run build`, Publish directory: `dist`, Functions directory: `netlify/functions` (już zadeklarowane w `netlify.toml`). Upewnij się, że w logach buildu widnieje Node 22.12 lub nowszy.
-5. Uruchom nowy deploy, upewnij się, że funkcja `cms` widoczna jest w panelu Functions. Otwórz `/studio/login.html`, zaloguj się i edytuj treść.
-6. Zapisuj szkice i dopiero po zatwierdzeniu klikaj **Opublikuj**. Zmiany są zapisywane w Netlify Blobs (przetrwają następne deploye) i dostarczane przez funkcję — **bez automatycznych commitów do GitHub**.
-
-### Alternatywnie — Netlify CLI
-
-Po zalogowaniu i powiązaniu katalogu z istniejącą stroną:
+### Kontrola kodu i testy
 
 ```bash
-npm install
-npx netlify-cli login
-npx netlify-cli link
-npx netlify-cli deploy --build --prod
-```
-
-**Nigdy nie umieszczaj zmiennych sekretów w repozytorium.** Dodaj je przez Netlify UI. Netlify Blobs jest dostępny w Functions; `@netlify/blobs` jest deklarowany w `package.json`.
-
-## Struktura
-
-```text
-index.html                   strona główna
-engineering.html i inne      podstrony showcase
-assets/, css/, js/           oryginalny frontend + runtime CMS
-studio/index.html            osobny panel edycyjny
-studio/login.html            uwierzytelnianie
-studio/editor.js             edycja WYSIWYG, zapis szkicu, publikacja
-netlify/functions/cms.mjs    API produkcyjne + Netlify Blobs
-cms-shared.mjs               walidacja, sesje, reguły bezpieczeństwa
-dev-server.mjs               lokalny backend bez zależności
-build.mjs                    przygotowanie statycznego katalogu dist/
-qa/                          testy API
-```
-
-## Testy
-
-```bash
-npm test
 npm run check
+npm test
 npm run build
 ```
 
-## Zasady bezpieczeństwa i ograniczenia
+**Uwaga dotycząca obecnego testu:** plik `qa/cms-api.test.mjs` uruchamia lokalny serwer z katalogu wyznaczonego na podstawie ścieżki URL; przy katalogach ze spacją w nazwie (np. `sollux-cms-studio 2`) może to powodować błąd `Server failed to start`. Do lokalnych testów użyj katalogu bez spacji. Zakończony build nie jest równoznaczny z ukończeniem pełnych testów przeglądarkowych.
 
-- Konto administratora korzysta z nazwy użytkownika i hasła ustawianych po stronie serwera. Domyślnie lokalnie `admin / 1`; produkcja Netlify wymaga jawnej konfiguracji.
-- API edycji używa podpisanej sesji w ciasteczku `HttpOnly`, `SameSite=Strict`, z wygaśnięciem po 12 godzinach. Sekret i hasło pozostają po stronie serwera.
-- Dane są filtrowane: do HTML nie trafia niezweryfikowany kod, a blokom używany jest `textContent` zamiast HTML stringów.
-- Przesyłane obrazy mają ograniczenie formatu i wielkości oraz sprawdzaną sygnaturę pliku.
-- Panel obsługuje jednego administratora. Nie ma wieloskładnikowego logowania, ograniczania liczby prób hasła ani wbudowanego przywracania poprzedniej publikacji. Dla szeroko dostępnej strony warto dodać zewnętrzną warstwę kontroli dostępu i limitowanie żądań logowania.
-- Dwa jednoczesne okna edycji tego samego szkicu mogą nadpisać sobie zmiany (*last write wins*). Rozbudowane wersjonowanie, role użytkowników, workflow zatwierdzania i wieloosobowa edycja **nie** są zaimplementowane.
-- CMS nie modyfikuje plików Figma ani repozytorium. Dodatkowe bloki są renderowane jako moduły ponad stopką, bez modyfikacji oryginalnej struktury hero.
-- To własny, niewielki CMS *inspirowany* Gutenberg/ACF, a **nie** instalacja WordPress, Gutenberg lub ACF.
-- Testy API uruchomione lokalnie. Pełne testy w przeglądarce oraz produkcyjna konfiguracja Netlify wymagają osobnego sprawdzenia po wdrożeniu.
+## 6. Wdrożenie i konfiguracja Netlify
 
-## Typografia
+Repozytorium: **https://github.com/batuhanyigitt/sollux-idomods-rekrutacja**
 
-Red Hat Display jest ładowany przez oficjalny arkusz Google Fonts. W trybie offline używany jest systemowy font zastępczy; żaden plik binarny fontu nie jest dołączony do paczki.
+Docelowy projekt Netlify: **sollux-batuhan-task**.
+
+| Parametr | Wartość |
+| --- | --- |
+| Branch produkcyjny | `main` |
+| Build command | `npm run build` |
+| Publish directory | `dist` |
+| Functions directory | `netlify/functions` |
+| Konfiguracja | `netlify.toml` |
+| Minimalna wersja Node | `22.12` |
+
+Zmienne środowiskowe ustawiane w panelu Netlify, **nigdy w publicznym repozytorium**:
+
+| Zmienna | Przeznaczenie |
+| --- | --- |
+| `CMS_ADMIN_USERNAME` | Nazwa administratora |
+| `CMS_ADMIN_PASSWORD` | Hasło administratora, co najmniej 12 znaków |
+| `CMS_SESSION_SECRET` | Losowy sekret sesji, co najmniej 32 znaki |
+
+Po zmianie zmiennych Netlify wykonaj nowy deploy, aby funkcje otrzymały nowe ustawienia. Wdrożenie kodu przez GitHub wyzwala normalny proces build/deploy, jeżeli projekt jest podłączony do repozytorium.
+
+**Nie udostępniaj hasła lub `CMS_SESSION_SECRET` w GitHubie, pliku README, issue, publicznym zrzucie ekranu ani w załącznikach z kodem.** Konto udostępnione do oceny należy wyłączyć lub zmienić jego hasło po zakończeniu testów.
+
+## 7. Struktura katalogów
+
+```text
+index.html                   landing page
+engineering.html             przegląd techniczny
+experience.html              demonstracja interakcji
+system.html                  design system
+quality.html                 kontrole jakości w przeglądarce
+process.html                 dokumentacja procesu
+assets/                      grafiki, ikony, fonty
+css/                         CSS strony i dokumentacji
+js/main.js                   nawigacja, slider, interakcje
+js/shader.js                 animacja WebGL
+js/content-runtime.js        nakładanie zmian treści
+js/cms-public.js             pobieranie opublikowanej zawartości
+studio/index.html            panel edycyjny
+studio/login.html            ekran logowania
+studio/editor.js             zachowanie edytora
+studio/editor.css            style edytora
+netlify/functions/cms.mjs    produkcyjne API CMS
+cms-shared.mjs               walidacja, sesje, bezpieczeństwo
+dev-server.mjs               lokalny serwer aplikacji
+build.mjs                    generowanie katalogu dist/
+netlify.toml                 konfiguracja hostingu
+qa/                          automatyczne testy API
+```
+
+## 8. Historia pracy z AI i dokumentacja procesu
+
+Podczas zadania wykorzystywano narzędzia AI do analizy materiałów, iteracyjnego opracowania interfejsu i rozwiązywania problemów technicznych. **Zanonimizowany oryginalny eksport rozmowy z etapu tworzenia landing page’a** jest przekazywany **oddzielnie** jako plik JSON, ponieważ może zawierać szczegółowy przebieg pracy oraz zdarzenia użycia narzędzi.
+
+- Plik rozmowy **nie jest częścią bieżącego publicznego repozytorium**.
+- Eksport zachowuje oryginalną kolejność wiadomości i zapis zdarzeń narzędziowych; dane osobowe i wrażliwe zostały zredagowane.
+- Eksport dotyczy wskazanej rozmowy z realizacji strony; **późniejsze prace nad CMS nie są automatycznie ujęte w tym samym pliku**.
+- Dokumentacji podstron `engineering`, `experience`, `system`, `quality` i `process` można użyć do przeglądu rozwiązań i procesu, ale nie zastępuje ona pełnej historii konwersacji AI.
+
+Konkretne narzędzia, skills, pluginy i wywołania MCP należy oceniać na podstawie faktycznych zapisów w dostarczonym eksporcie, a nie deklaracji o ich użyciu bez potwierdzenia.
+
+## 9. Ograniczenia i zalecenia
+
+- To **autorski lekki CMS**, nie WordPress, ACF ani Gutenberg.
+- Obecna wersja zarządza treścią strony głównej; nie jest edytorem wszystkich stron serwisu.
+- Obsługiwane jest jedno konto administratora, bez rozbudowanych ról i współpracy w czasie rzeczywistym.
+- Brak wbudowanego MFA, ograniczania liczby prób logowania i historii wszystkich opublikowanych wersji.
+- Jednoczesna edycja z dwóch kart może spowodować nadpisanie szkicu ostatnim zapisem.
+- Kopia JSON jest przydatna przed większymi zmianami. Nie zastępuje systemu wersjonowania Git ani kopii plików multimedialnych.
+- Podstrona Quality udostępnia kontrole przeglądarkowe, nie pełny certyfikowany audyt WCAG.
+- Publikacja CMS zależy od prawidłowej konfiguracji Netlify Functions i Netlify Blobs.
+
+---
+
+**Autor:** Batuhan Yiğit  
+**Kontekst:** IdoMods — zadanie rekrutacyjne Frontend + AI Developer  
+**Zasada:** publiczny frontend + osobny edytor + techniczna dokumentacja + oddzielnie przekazana historia pracy z AI.
